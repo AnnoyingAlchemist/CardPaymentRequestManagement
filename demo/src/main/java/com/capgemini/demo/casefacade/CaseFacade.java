@@ -1,7 +1,6 @@
 package com.capgemini.demo.casefacade;
 
 import jakarta.persistence.*;
-import jakarta.validation.Valid;
 
 @Entity
 public class CaseFacade {
@@ -12,19 +11,19 @@ public class CaseFacade {
 
     private Boolean ruleEvalFailed;
 
-    @Embedded @Valid
+    @Embedded
     private CaseClassification classification;
 
-    @Embedded @Valid
+    @Embedded
     private CaseAssignment assignment;
 
-    @Embedded @Valid
+    @Embedded
     private CaseIdentifier identifier;
 
-    @Embedded @Valid
+    @Embedded
     private CaseTransaction transaction;
 
-    @Embedded @Valid
+    @Embedded
     private CaseOutcome outcome;
 
     public CaseFacade() {}
