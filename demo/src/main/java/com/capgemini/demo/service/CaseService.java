@@ -17,12 +17,10 @@ public class CaseService {
     }
 
     public CaseFacade createCase(@Valid CaseFacade c) {
-
         if (c.getIdentifier() == null ||
             c.getIdentifier().getCustomerId() == null) {
             throw new IllegalArgumentException("Customer ID required");
         }
-
         return repository.save(c);
     }
 
