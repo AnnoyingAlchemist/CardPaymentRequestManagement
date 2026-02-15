@@ -2,7 +2,7 @@ package com.capgemini.demo.service;
 
 import com.capgemini.demo.casefacade.CaseFacade;
 import com.capgemini.demo.repository.CaseRepository;
-import jakarta.validation.Valid;
+//import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,7 +16,7 @@ public class CaseService {
         this.repository = repository;
     }
 
-    public CaseFacade createCase(@Valid CaseFacade c) {
+    public CaseFacade createCase(CaseFacade c) {
         if (c.getIdentifier() == null ||
             c.getIdentifier().getCustomerId() == null) {
             throw new IllegalArgumentException("Customer ID required");
@@ -31,5 +31,28 @@ public class CaseService {
 
     public List<CaseFacade> getAllCases() {
         return repository.findAll();
+    }
+
+    
+    public CaseFacade updateCase(Long id, CaseFacade updatedCase) {
+        CaseFacade existing = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Case not found"));
+
+        existing.setRuleEvalFailed(updatedCase.getRuleEvalFailed());
+        existing.setClassification(updatedCase.getClassification());
+        existing.setAssignment(updatedCase.getAssignment());
+        existing.setIdentifier(updatedCase.getIdentifier());
+        existing.setTransaction(updatedCase.getTransaction());
+        existing.setOutcome(updatedCase.getOutcome());
+
+        return repository.save(existing);
+    }
+
+    /* NEW: Delete Case */
+    public void deleteCase(Long id) {
+        if (!repository.existsById(id)) {
+            throw new RuntimeException("Case not found");
+        }
+        repository.deleteById(id);
     }
 }

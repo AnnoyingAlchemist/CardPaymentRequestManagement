@@ -1,20 +1,16 @@
 package com.capgemini.demo.casefacade;
 
 import jakarta.persistence.Embeddable;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Embeddable
+@Getter
+@Setter
+@NoArgsConstructor
 public class CaseOutcome {
 
     private String resolution;
     private String resolutionNotes;
-
-    public CaseOutcome() {}
-
-    public String getResolution() { return resolution; }
-    public void setResolution(String resolution) { this.resolution = resolution; }
-
-    public String getResolutionNotes() { return resolutionNotes; }
-    public void setResolutionNotes(String resolutionNotes) {
-        this.resolutionNotes = resolutionNotes;
-    }
 }
