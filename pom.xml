@@ -23,7 +23,12 @@
     </properties>
 
     <dependencies>
-
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>3.0.1</version>
+            <scope>compile</scope>
+        </dependency>
         <!-- Spring Boot -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
