@@ -13,7 +13,7 @@ import lombok.Setter;
 public class CaseFacade {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "case_id")
     private Long id;
 
@@ -55,7 +55,8 @@ public class CaseFacade {
             @AttributeOverride(name = "transactionCurrency", column = @Column(name = "transaction_currency")),
             @AttributeOverride(name = "transactionDateTime", column = @Column(name = "transaction_date_time")),
             @AttributeOverride(name = "merchantCategoryCode", column = @Column(name = "merchant_category_code")),
-            @AttributeOverride(name = "scheme", column = @Column(name = "scheme"))
+            @AttributeOverride(name = "scheme", column = @Column(name = "scheme")),
+            @AttributeOverride(name = "transactionCountry", column = @Column(name = "transaction_country"))
     })
     private CaseTransaction transaction;
 

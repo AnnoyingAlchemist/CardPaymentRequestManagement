@@ -16,4 +16,5 @@ public class CaseTransaction {
     private String transactionDateTime;
     private String merchantCategoryCode;
     private String scheme;
+    private String transactionCountry;
 }
