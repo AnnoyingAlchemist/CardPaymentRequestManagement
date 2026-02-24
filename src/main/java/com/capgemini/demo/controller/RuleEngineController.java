@@ -24,31 +24,8 @@ public class RuleEngineController {
 
 
     @PostMapping("/evaluate")
-    public String evalCase(@RequestBody CaseFacade c) {
-        caseService.getCase(c.getId());
-        switch(c.getIdentifier().getCaseType()){
-            case "FRAUD_INVESTIGATION":
-                ruleEngine.setRuleset(new Fraud());
-                break;
-            case "CUSTOMER_DISPUTE":
-                ruleEngine.setRuleset(new CustomerDispute());
-                break;
-            case "CHARGEBACK":
-                ruleEngine.setRuleset(new Chargeback());
-                break;
-            case "CARD_STATUS":
-                ruleEngine.setRuleset(new CardStatus());
-                break;
-            default:
-                ruleEngine.setRuleset(new UnknownRule());
-                //UnknownRule should return unknown priority
-                //set rule_eval_failed flag to true
-                break;
-        }
-
-            ruleEngine.evaluateCase(c);
-
-        return "Case priority and recommendation";
+    public RuleSuggestion evalCase(@RequestBody CaseFacade c) {
+        return ruleService.evalCase(c);
     }
 
     @PostMapping("/register-case")
