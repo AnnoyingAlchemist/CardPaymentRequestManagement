@@ -1,6 +1,8 @@
-package com.capgemini.demo.ruleEngine;
+package com.capgemini.demo.ruleEngine.rules;
 
 import com.capgemini.demo.casefacade.CaseFacade;
+import com.capgemini.demo.ruleEngine.RuleSet;
+import com.capgemini.demo.ruleEngine.RuleSuggestion;
 
 public class Chargeback implements RuleSet {
 

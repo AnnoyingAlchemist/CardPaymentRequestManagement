@@ -6,6 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class RuleSuggestion {
-    private String priority;
+    private priority priority;
     private String recommendedNextAction;
 }
