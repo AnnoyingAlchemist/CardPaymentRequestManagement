@@ -22,6 +22,8 @@ public class CaseService {
             c.getIdentifier().getCustomerId().isBlank()) {
             throw new IllegalArgumentException("Customer ID required");
         }
+        c.setId(null);
+
         return repository.save(c);
     }
 

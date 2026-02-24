@@ -13,7 +13,7 @@ import lombok.Setter;
 public class CaseFacade {
 
     @Id
-    //@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "case_id")
     private Long id;
 
