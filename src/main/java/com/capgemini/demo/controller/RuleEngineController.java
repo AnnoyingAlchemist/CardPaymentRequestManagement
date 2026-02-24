@@ -1,7 +1,8 @@
 package com.capgemini.demo.controller;
 
 import com.capgemini.demo.casefacade.CaseFacade;
-import com.capgemini.demo.ruleEngine.RuleEngine;
+import com.capgemini.demo.ruleEngine.*;
+import com.capgemini.demo.ruleEngine.rules.*;
 import com.capgemini.demo.service.CaseService;
 import com.capgemini.demo.service.RuleEngineService;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,7 +26,28 @@ public class RuleEngineController {
     @PostMapping("/evaluate")
     public String evalCase(@RequestBody CaseFacade c) {
         caseService.getCase(c.getId());
-        //RuleEngine.evaluate(c);
+        switch(c.getIdentifier().getCaseType()){
+            case "FRAUD_INVESTIGATION":
+                ruleEngine.setRuleset(new Fraud());
+                break;
+            case "CUSTOMER_DISPUTE":
+                ruleEngine.setRuleset(new CustomerDispute());
+                break;
+            case "CHARGEBACK":
+                ruleEngine.setRuleset(new Chargeback());
+                break;
+            case "CARD_STATUS":
+                ruleEngine.setRuleset(new CardStatus());
+                break;
+            default:
+                ruleEngine.setRuleset(new UnknownRule());
+                //UnknownRule should return unknown priority
+                //set rule_eval_failed flag to true
+                break;
+        }
+
+            ruleEngine.evaluateCase(c);
+
         return "Case priority and recommendation";
     }
 
@@ -33,6 +55,6 @@ public class RuleEngineController {
     public String evaluateCase(@RequestBody CaseFacade c) {
         caseService.getCase(c.getId());
         ruleEngine.evaluateCase(c);
-        return "Case priority and reccomendation";
+        return "Case priority and recommendation";
     }
 }
