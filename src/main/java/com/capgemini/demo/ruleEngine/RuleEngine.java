@@ -13,8 +13,8 @@ public class RuleEngine {
         this.ruleset = r;
     }
 
-    public void evaluateCase(CaseFacade c){
-        ruleset.evaluate(c);
+    public RuleSuggestion evaluateCase(CaseFacade c){
+        return ruleset.evaluate(c);
     }
 
 }
