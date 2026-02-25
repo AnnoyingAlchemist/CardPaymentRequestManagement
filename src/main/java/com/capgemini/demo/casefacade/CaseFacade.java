@@ -6,7 +6,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "cases")
+@Table(
+        name = "cases",
+        uniqueConstraints = @UniqueConstraint(
+                name = "uq_cases_caseType_txId_status",
+                columnNames = {"case_type", "primary_transaction_id", "status"} // <-- ADDED
+        )
+)
 @Getter
 @Setter
 @NoArgsConstructor
