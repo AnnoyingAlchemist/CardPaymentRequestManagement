@@ -2,6 +2,8 @@ package com.capgemini.demo.service;
 
 import com.capgemini.demo.casefacade.CaseFacade;
 import com.capgemini.demo.repository.CaseRepository;
+import com.capgemini.demo.ruleEngine.RuleSuggestion;
+import com.capgemini.demo.ruleEngine.priority;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -51,6 +53,14 @@ public class CaseService {
         }
 
         c.setId(null);
+
+        RuleEngineService ruleService = new RuleEngineService();
+        RuleSuggestion suggestion = ruleService.evalCase(c);
+        if(suggestion.getPriority() == priority.UNKNOWN){
+            c.setRuleEvalFailed(true);
+        }
+        c.getClassification().setPriority(suggestion.getPriority().name());
+        c.getClassification().setRecommendedNextAction(suggestion.getRecommendedNextAction());
 
         try {
             return repository.save(c);

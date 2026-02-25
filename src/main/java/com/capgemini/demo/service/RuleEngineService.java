@@ -7,17 +7,20 @@ import com.capgemini.demo.ruleEngine.RuleSuggestion;
 import com.capgemini.demo.ruleEngine.rules.*;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+
 @Service
 public class RuleEngineService {
-    private CaseService caseService;
-    private RuleEngine ruleEngine;
+    //private CaseService caseService;
+    //private RuleEngine ruleEngine = new RuleEngine(new UnknownRule());
 
-    public RuleEngineService(CaseService caseService) {
-        this.caseService = caseService;
+
+    public RuleEngineService() {
     }
 
     public RuleSuggestion evalCase(CaseFacade c){
-        caseService.getCase(c.getId());
+        //caseService.getCase(c.getId());
+        RuleEngine ruleEngine = new RuleEngine(new UnknownRule());
         switch(c.getIdentifier().getCaseType()){
             case "FRAUD_INVESTIGATION":
                 ruleEngine.setRuleset(new Fraud());
@@ -39,7 +42,7 @@ public class RuleEngineService {
         }
         RuleSuggestion suggestion = new RuleSuggestion();
         suggestion = ruleEngine.evaluateCase(c);
-        //Modify case to update suggestion
+        //TODO: Modify case to update suggestion
 
         return suggestion;
     }
