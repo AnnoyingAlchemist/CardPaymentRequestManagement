@@ -42,14 +42,14 @@ public class CaseController {
     @PutMapping("/{caseId}/status")
     public CaseFacade updateStatus(
             @PathVariable Long caseId,
-            @RequestBody String newStatus) {
+            @RequestParam String newStatus) {
         return service.updateStatus(caseId, newStatus);
     }
 
     @PutMapping("/{caseId}/assignee")
     public CaseFacade updateAssignee(
             @PathVariable Long caseId,
-            @RequestBody String assignee) {
+            @RequestParam String assignee) {
         return service.updateAssignee(caseId, assignee);
     }
 
