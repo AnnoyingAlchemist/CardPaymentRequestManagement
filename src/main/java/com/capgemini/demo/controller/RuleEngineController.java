@@ -5,6 +5,7 @@ import com.capgemini.demo.ruleEngine.*;
 import com.capgemini.demo.ruleEngine.rules.*;
 import com.capgemini.demo.service.CaseService;
 import com.capgemini.demo.service.RuleEngineService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,12 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/rules")
 public class RuleEngineController {
     private final RuleEngineService ruleService;
-    private final CaseService caseService;
     private RuleEngine ruleEngine;
 
-    public RuleEngineController(RuleEngineService service, CaseService caseService) {
+    public RuleEngineController(RuleEngineService service) {
         this.ruleService = service;
-        this.caseService = caseService;
     }
 
 
@@ -30,7 +29,7 @@ public class RuleEngineController {
 
     @PostMapping("/register-case")
     public String evaluateCase(@RequestBody CaseFacade c) {
-        caseService.getCase(c.getId());
+        //caseService.getCase(c.getId());
         ruleEngine.evaluateCase(c);
         return "Case priority and recommendation";
     }
