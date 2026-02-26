@@ -1,7 +1,6 @@
 package com.capgemini.demo.ruleEngine.rules;
 
-import com.capgemini.demo.casefacade.CaseFacade;
-import com.capgemini.demo.casefacade.CaseSummary;
+import com.capgemini.demo.casehelper.CaseSummary;
 import com.capgemini.demo.ruleEngine.RuleSet;
 import com.capgemini.demo.ruleEngine.RuleSuggestion;
 import com.capgemini.demo.ruleEngine.priority;

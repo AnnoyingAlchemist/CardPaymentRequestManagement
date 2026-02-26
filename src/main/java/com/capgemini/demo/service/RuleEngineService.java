@@ -1,14 +1,10 @@
 package com.capgemini.demo.service;
 
-import com.capgemini.demo.casefacade.CaseFacade;
-import com.capgemini.demo.casefacade.CaseSummary;
-import com.capgemini.demo.repository.CaseRepository;
+import com.capgemini.demo.casehelper.CaseSummary;
 import com.capgemini.demo.ruleEngine.RuleEngine;
 import com.capgemini.demo.ruleEngine.RuleSuggestion;
 import com.capgemini.demo.ruleEngine.rules.*;
 import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
 
 @Service
 public class RuleEngineService {

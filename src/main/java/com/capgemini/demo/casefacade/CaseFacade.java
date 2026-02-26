@@ -1,9 +1,7 @@
 package com.capgemini.demo.casefacade;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Table(
@@ -72,4 +70,17 @@ public class CaseFacade {
             @AttributeOverride(name = "resolutionNotes", column = @Column(name = "resolution_notes"))
     })
     private CaseOutcome outcome;
+
+    @Builder
+    public CaseFacade(Long id, Boolean ruleEvalFailed, CaseClassification classification,
+                      CaseAssignment assignment, CaseIdentifier identifier,
+                      CaseTransaction transaction, CaseOutcome outcome) {
+        this.id = id;
+        this.ruleEvalFailed = ruleEvalFailed;
+        this.classification = classification;
+        this.assignment = assignment;
+        this.identifier = identifier;
+        this.transaction = transaction;
+        this.outcome = outcome;
+    }
 }

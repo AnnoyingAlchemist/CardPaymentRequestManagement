@@ -1,5 +1,9 @@
-package com.capgemini.demo.casefacade;
+package com.capgemini.demo.casehelper;
 
+import com.capgemini.demo.casefacade.CaseClassification;
+import com.capgemini.demo.casefacade.CaseFacade;
+import com.capgemini.demo.casefacade.CaseIdentifier;
+import com.capgemini.demo.casefacade.CaseTransaction;
 import lombok.Getter;
 import lombok.Setter;
 

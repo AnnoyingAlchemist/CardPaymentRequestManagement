@@ -1,7 +1,6 @@
 package com.capgemini.demo.ruleEngine;
 
-import com.capgemini.demo.casefacade.CaseFacade;
-import com.capgemini.demo.casefacade.CaseSummary;
+import com.capgemini.demo.casehelper.CaseSummary;
 import lombok.Getter;
 import lombok.Setter;
 

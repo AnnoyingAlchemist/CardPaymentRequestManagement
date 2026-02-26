@@ -1,16 +1,12 @@
 package com.capgemini.demo.ruleEngine.rules;
 
-import com.capgemini.demo.casefacade.CaseFacade;
-import com.capgemini.demo.casefacade.CaseSummary;
+import com.capgemini.demo.casehelper.CaseSummary;
 import com.capgemini.demo.ruleEngine.RuleSet;
 import com.capgemini.demo.ruleEngine.RuleSuggestion;
 import com.capgemini.demo.ruleEngine.priority;
-import org.springframework.format.annotation.DurationFormat;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
 
 public class Chargeback implements RuleSet {
 

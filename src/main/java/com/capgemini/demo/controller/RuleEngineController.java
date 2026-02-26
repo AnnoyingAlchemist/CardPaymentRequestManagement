@@ -1,12 +1,9 @@
 package com.capgemini.demo.controller;
 
 import com.capgemini.demo.casefacade.CaseFacade;
-import com.capgemini.demo.casefacade.CaseSummary;
+import com.capgemini.demo.casehelper.CaseSummary;
 import com.capgemini.demo.ruleEngine.*;
-import com.capgemini.demo.ruleEngine.rules.*;
-import com.capgemini.demo.service.CaseService;
 import com.capgemini.demo.service.RuleEngineService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +18,6 @@ public class RuleEngineController {
     public RuleEngineController(RuleEngineService service) {
         this.ruleService = service;
     }
-
 
     @PostMapping("/evaluate")
     public RuleSuggestion evalCase(@RequestBody CaseFacade c) {

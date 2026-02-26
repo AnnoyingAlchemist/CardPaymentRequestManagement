@@ -3,7 +3,8 @@ package com.capgemini.demo.service;
 import com.capgemini.demo.casefacade.CaseAssignment;
 import com.capgemini.demo.casefacade.CaseClassification;
 import com.capgemini.demo.casefacade.CaseFacade;
-import com.capgemini.demo.casefacade.CaseSummary;
+import com.capgemini.demo.casehelper.CaseSummary;
+import com.capgemini.demo.repository.CaseHistoryRepository;
 import com.capgemini.demo.repository.CaseRepository;
 import com.capgemini.demo.ruleEngine.RuleSuggestion;
 import com.capgemini.demo.ruleEngine.priority;
@@ -22,9 +23,11 @@ import java.util.List;
 public class CaseService {
 
     private final CaseRepository repository;
+    private final CaseHistoryRepository historyRepository;
 
-    public CaseService(CaseRepository repository) {
+    public CaseService(CaseRepository repository,CaseHistoryRepository historyRepo) {
         this.repository = repository;
+        this.historyRepository = historyRepo;
     }
 
     public CaseFacade createCase(CaseFacade c) {
