@@ -39,6 +39,25 @@ public class CaseController {
         return service.updateCase(id, updatedCase);
     }
 
+    @PutMapping("/{caseId}/status")
+    public CaseFacade updateStatus(
+            @PathVariable Long caseId,
+            @RequestBody String newStatus) {
+        return service.updateStatus(caseId, newStatus);
+    }
+
+    @PutMapping("/{caseId}/assignee")
+    public CaseFacade updateAssignee(
+            @PathVariable Long caseId,
+            @RequestBody String assignee) {
+        return service.updateAssignee(caseId, assignee);
+    }
+
+    @GetMapping("/{caseId}/history")
+    public List<String> getCaseHistory(@PathVariable Long caseId) {
+        return service.getCaseHistory(caseId);
+    }
+
     @DeleteMapping("/{id}")
     public void deleteCase(@PathVariable Long id) {
         service.deleteCase(id);

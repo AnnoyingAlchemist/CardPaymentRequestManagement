@@ -1,5 +1,7 @@
 package com.capgemini.demo.service;
 
+import com.capgemini.demo.casefacade.CaseAssignment;
+import com.capgemini.demo.casefacade.CaseClassification;
 import com.capgemini.demo.casefacade.CaseFacade;
 import com.capgemini.demo.repository.CaseRepository;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -8,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional; // <-- ADD
 import org.springframework.web.server.ResponseStatusException; // <-- ADD
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -119,5 +123,87 @@ public class CaseService {
                 );
 
         repository.deleteById(id);
+    }
+
+    public CaseFacade updateStatus(Long caseId, String newStatus) {
+        CaseFacade existing = repository.findById(caseId)
+                .orElseThrow(() ->
+                        new ResponseStatusException(HttpStatus.NOT_FOUND,
+                                "Case with ID " + caseId + " not found"));
+
+        if (newStatus == null || newStatus.isBlank()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Status must not be blank");
+        }
+
+        if (existing.getClassification() == null) {
+            existing.setClassification(new CaseClassification());
+        }
+
+        existing.getClassification().setStatus(newStatus);
+
+        return repository.save(existing);
+    }
+
+    public CaseFacade updateAssignee(Long caseId, String assignee) {
+        CaseFacade existing = repository.findById(caseId)
+                .orElseThrow(() ->
+                        new ResponseStatusException(HttpStatus.NOT_FOUND,
+                                "Case with ID " + caseId + " not found"));
+
+        if (assignee == null || assignee.isBlank()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Assignee must not be blank");
+        }
+
+        if (existing.getAssignment() == null) {
+            existing.setAssignment(new CaseAssignment());
+            existing.getAssignment().setCreatedAt(LocalDateTime.now());
+        }
+
+        existing.getAssignment().setAssignedTo(assignee);
+        existing.getAssignment().setUpdatedAt(LocalDateTime.now());
+
+        return repository.save(existing);
+    }
+
+    public List<String> getCaseHistory(Long caseId) {
+        CaseFacade existing = repository.findById(caseId)
+                .orElseThrow(() ->
+                        new ResponseStatusException(HttpStatus.NOT_FOUND,
+                                "Case with ID " + caseId + " not found"));
+
+        List<String> history = new ArrayList<>();
+
+        if (existing.getAssignment() != null) {
+            if (existing.getAssignment().getAssignedTo() != null)
+                history.add("Assigned to: " + existing.getAssignment().getAssignedTo());
+            if (existing.getAssignment().getCreatedAt() != null)
+                history.add("Created at: " + existing.getAssignment().getCreatedAt());
+            if (existing.getAssignment().getUpdatedAt() != null)
+                history.add("Updated at: " + existing.getAssignment().getUpdatedAt());
+            if (existing.getAssignment().getResolvedAt() != null)
+                history.add("Resolved at: " + existing.getAssignment().getResolvedAt());
+        }
+
+        if (existing.getClassification() != null) {
+            if (existing.getClassification().getStatus() != null)
+                history.add("Status: " + existing.getClassification().getStatus());
+            if (existing.getClassification().getPriority() != null)
+                history.add("Priority: " + existing.getClassification().getPriority());
+            if (existing.getClassification().getDueDate() != null)
+                history.add("Due date: " + existing.getClassification().getDueDate());
+            if (existing.getClassification().getRecommendedNextAction() != null)
+                history.add("Recommended next action: " + existing.getClassification().getRecommendedNextAction());
+        }
+
+        if (existing.getOutcome() != null) {
+            if (existing.getOutcome().getResolution() != null)
+                history.add("Resolution: " + existing.getOutcome().getResolution());
+            if (existing.getOutcome().getResolutionNotes() != null)
+                history.add("Resolution notes: " + existing.getOutcome().getResolutionNotes());
+        }
+
+        return history;
     }
 }
