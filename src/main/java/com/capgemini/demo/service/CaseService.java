@@ -3,6 +3,7 @@ package com.capgemini.demo.service;
 import com.capgemini.demo.casefacade.CaseAssignment;
 import com.capgemini.demo.casefacade.CaseClassification;
 import com.capgemini.demo.casefacade.CaseFacade;
+import com.capgemini.demo.casefacade.CaseSummary;
 import com.capgemini.demo.repository.CaseRepository;
 import com.capgemini.demo.ruleEngine.RuleSuggestion;
 import com.capgemini.demo.ruleEngine.priority;
@@ -59,7 +60,7 @@ public class CaseService {
         c.setId(null);
 
         RuleEngineService ruleService = new RuleEngineService();
-        RuleSuggestion suggestion = ruleService.evalCase(c);
+        RuleSuggestion suggestion = ruleService.evalCase(new CaseSummary(c));
         if(suggestion.getPriority() == priority.UNKNOWN){
             c.setRuleEvalFailed(true);
         }

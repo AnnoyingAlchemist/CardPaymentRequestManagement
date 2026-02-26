@@ -1,6 +1,7 @@
 package com.capgemini.demo.controller;
 
 import com.capgemini.demo.casefacade.CaseFacade;
+import com.capgemini.demo.casefacade.CaseSummary;
 import com.capgemini.demo.ruleEngine.*;
 import com.capgemini.demo.ruleEngine.rules.*;
 import com.capgemini.demo.service.CaseService;
@@ -24,13 +25,13 @@ public class RuleEngineController {
 
     @PostMapping("/evaluate")
     public RuleSuggestion evalCase(@RequestBody CaseFacade c) {
-        return ruleService.evalCase(c);
+        return ruleService.evalCase(new CaseSummary(c));
     }
 
     @PostMapping("/register-case")
     public String evaluateCase(@RequestBody CaseFacade c) {
         //caseService.getCase(c.getId());
-        ruleEngine.evaluateCase(c);
+        ruleEngine.evaluateCase(new CaseSummary(c));
         return "Case priority and recommendation";
     }
 }
