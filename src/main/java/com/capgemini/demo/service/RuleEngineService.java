@@ -1,6 +1,7 @@
 package com.capgemini.demo.service;
 
 import com.capgemini.demo.casefacade.CaseFacade;
+import com.capgemini.demo.casefacade.CaseSummary;
 import com.capgemini.demo.repository.CaseRepository;
 import com.capgemini.demo.ruleEngine.RuleEngine;
 import com.capgemini.demo.ruleEngine.RuleSuggestion;
@@ -18,10 +19,10 @@ public class RuleEngineService {
     public RuleEngineService() {
     }
 
-    public RuleSuggestion evalCase(CaseFacade c){
+    public RuleSuggestion evalCase(CaseSummary c){
         //caseService.getCase(c.getId());
         RuleEngine ruleEngine = new RuleEngine(new UnknownRule());
-        switch(c.getIdentifier().getCaseType()){
+        switch(c.getCaseType()){
             case "FRAUD_INVESTIGATION":
                 ruleEngine.setRuleset(new Fraud());
                 break;

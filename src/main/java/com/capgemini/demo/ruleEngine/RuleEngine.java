@@ -1,6 +1,7 @@
 package com.capgemini.demo.ruleEngine;
 
 import com.capgemini.demo.casefacade.CaseFacade;
+import com.capgemini.demo.casefacade.CaseSummary;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,7 +14,7 @@ public class RuleEngine {
         this.ruleset = r;
     }
 
-    public RuleSuggestion evaluateCase(CaseFacade c){
+    public RuleSuggestion evaluateCase(CaseSummary c){
         return ruleset.evaluate(c);
     }
 

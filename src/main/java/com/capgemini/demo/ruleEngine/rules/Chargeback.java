@@ -1,6 +1,7 @@
 package com.capgemini.demo.ruleEngine.rules;
 
 import com.capgemini.demo.casefacade.CaseFacade;
+import com.capgemini.demo.casefacade.CaseSummary;
 import com.capgemini.demo.ruleEngine.RuleSet;
 import com.capgemini.demo.ruleEngine.RuleSuggestion;
 import com.capgemini.demo.ruleEngine.priority;
@@ -14,10 +15,10 @@ import java.time.temporal.TemporalUnit;
 public class Chargeback implements RuleSet {
 
     @Override
-    public RuleSuggestion evaluate(CaseFacade caseFacade) {
+    public RuleSuggestion evaluate(CaseSummary caseSummary) {
         RuleSuggestion suggestion = new RuleSuggestion();
 
-        if(LocalDateTime.now().until(caseFacade.getClassification().getDueDate(), ChronoUnit.DAYS) <= 2){
+        if(LocalDateTime.now().until(caseSummary.getDueDate(), ChronoUnit.DAYS) <= 2){
             suggestion.setPriority(priority.CRITICAL);
             suggestion.setRecommendedNextAction("ESCALATE");
             return suggestion;
