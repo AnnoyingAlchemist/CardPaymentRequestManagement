@@ -1,6 +1,7 @@
 package com.capgemini.demo.controller;
 
 import com.capgemini.demo.casefacade.CaseFacade;
+import com.capgemini.demo.casehelper.CaseHistory;
 import com.capgemini.demo.service.CaseService;
 //import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
@@ -54,8 +55,8 @@ public class CaseController {
     }
 
     @GetMapping("/{caseId}/history")
-    public List<String> getCaseHistory(@PathVariable Long caseId) {
-        return service.getCaseHistory(caseId);
+    public List<CaseHistory> getCaseHistory(@PathVariable Long caseId) {
+        return service.getCaseHistoryById(caseId);
     }
 
     @DeleteMapping("/{id}")

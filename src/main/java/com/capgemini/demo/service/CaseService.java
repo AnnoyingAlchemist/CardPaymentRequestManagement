@@ -3,6 +3,7 @@ package com.capgemini.demo.service;
 import com.capgemini.demo.casefacade.CaseAssignment;
 import com.capgemini.demo.casefacade.CaseClassification;
 import com.capgemini.demo.casefacade.CaseFacade;
+import com.capgemini.demo.casehelper.CaseHistory;
 import com.capgemini.demo.casehelper.CaseSummary;
 import com.capgemini.demo.repository.CaseHistoryRepository;
 import com.capgemini.demo.repository.CaseRepository;
@@ -16,7 +17,9 @@ import org.springframework.web.server.ResponseStatusException; // <-- ADD
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional // <-- ADD: ensure save + unique constraint violations are handled within tx
@@ -71,6 +74,7 @@ public class CaseService {
         c.getClassification().setRecommendedNextAction(suggestion.getRecommendedNextAction());
 
         try {
+            addCaseToHistory(c, "created", c.getClassification().getStatus());
             return repository.save(c);
         } catch (DataIntegrityViolationException dive) {
             // If DB-level unique constraint fires (added below)
@@ -137,6 +141,7 @@ public class CaseService {
                 );
 
         repository.deleteById(id);
+        historyRepository.deleteByCaseId(id);
     }
 
     public CaseFacade updateStatus(Long caseId, String newStatus) {
@@ -149,6 +154,30 @@ public class CaseService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     "Status must not be blank");
         }
+
+        addCaseToHistory(existing, "N/A",newStatus);
+
+        if (existing.getClassification() == null) {
+            existing.setClassification(new CaseClassification());
+        }
+
+        existing.getClassification().setStatus(newStatus);
+
+        return repository.save(existing);
+    }
+
+    public CaseFacade updateStatus(Long caseId, String newStatus, String comment) {
+        CaseFacade existing = repository.findById(caseId)
+                .orElseThrow(() ->
+                        new ResponseStatusException(HttpStatus.NOT_FOUND,
+                                "Case with ID " + caseId + " not found"));
+
+        if (newStatus == null || newStatus.isBlank()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Status must not be blank");
+        }
+
+        addCaseToHistory(existing, comment,existing.getClassification().getStatus());
 
         if (existing.getClassification() == null) {
             existing.setClassification(new CaseClassification());
@@ -181,43 +210,48 @@ public class CaseService {
         return repository.save(existing);
     }
 
-    public List<String> getCaseHistory(Long caseId) {
-        CaseFacade existing = repository.findById(caseId)
+    public List<CaseHistory> getCaseHistoryById(Long caseId) {
+        try{
+            return (List<CaseHistory>)
+                    historyRepository.findByCaseId(repository.getById(caseId)).stream()
+                    .sorted(Comparator.comparing(CaseHistory::getChangedAt))
+                    .toList();
+        } catch (ResponseStatusException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "Case with ID " + caseId + " not found");
+        }
+                /*
                 .orElseThrow(() ->
                         new ResponseStatusException(HttpStatus.NOT_FOUND,
                                 "Case with ID " + caseId + " not found"));
+                 */
+    }
 
-        List<String> history = new ArrayList<>();
+    public void addCaseToHistory(Long caseId, String comment, String newStatus){
+        CaseFacade caseEntry = getCase(caseId);
 
-        if (existing.getAssignment() != null) {
-            if (existing.getAssignment().getAssignedTo() != null)
-                history.add("Assigned to: " + existing.getAssignment().getAssignedTo());
-            if (existing.getAssignment().getCreatedAt() != null)
-                history.add("Created at: " + existing.getAssignment().getCreatedAt());
-            if (existing.getAssignment().getUpdatedAt() != null)
-                history.add("Updated at: " + existing.getAssignment().getUpdatedAt());
-            if (existing.getAssignment().getResolvedAt() != null)
-                history.add("Resolved at: " + existing.getAssignment().getResolvedAt());
-        }
+        CaseHistory historyEntry = CaseHistory.builder()
+                .caseId(caseEntry)
+                .oldStatus(caseEntry.getClassification().getStatus())
+                .newStatus(newStatus)
+                .comment(comment)
+                .changedBy(caseEntry.getAssignment().getAssignedTo())
+                .changedAt(LocalDateTime.now())
+                .build();
 
-        if (existing.getClassification() != null) {
-            if (existing.getClassification().getStatus() != null)
-                history.add("Status: " + existing.getClassification().getStatus());
-            if (existing.getClassification().getPriority() != null)
-                history.add("Priority: " + existing.getClassification().getPriority());
-            if (existing.getClassification().getDueDate() != null)
-                history.add("Due date: " + existing.getClassification().getDueDate());
-            if (existing.getClassification().getRecommendedNextAction() != null)
-                history.add("Recommended next action: " + existing.getClassification().getRecommendedNextAction());
-        }
+        historyRepository.save(historyEntry);
+    }
 
-        if (existing.getOutcome() != null) {
-            if (existing.getOutcome().getResolution() != null)
-                history.add("Resolution: " + existing.getOutcome().getResolution());
-            if (existing.getOutcome().getResolutionNotes() != null)
-                history.add("Resolution notes: " + existing.getOutcome().getResolutionNotes());
-        }
+    public void addCaseToHistory(CaseFacade caseEntry, String comment, String newStatus){
+        CaseHistory historyEntry = CaseHistory.builder()
+                .caseId(caseEntry)
+                .oldStatus(caseEntry.getClassification().getStatus())
+                .newStatus(newStatus)
+                .comment(comment)
+                .changedBy(caseEntry.getAssignment().getAssignedTo())
+                .changedAt(LocalDateTime.now())
+                .build();
 
-        return history;
+        historyRepository.save(historyEntry);
     }
 }

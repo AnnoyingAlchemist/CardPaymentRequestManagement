@@ -1,24 +1,29 @@
 package com.capgemini.demo.casehelper;
 
+import com.capgemini.demo.casefacade.CaseFacade;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Setter
 @Getter
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Table(name="case_history")
 public class CaseHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO )
     @Column(name = "history_id")
-    private int historyId;
+    private long historyId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()//fetch = FetchType.LAZY
     @JoinColumn(name = "case_id")
-    private int caseId;
+    private CaseFacade caseId;
+
+    //private long caseId;
 
     @Column(name = "old_status")
     private String oldStatus;
@@ -30,19 +35,8 @@ public class CaseHistory {
     private String comment;
 
     @Column(name = "changed_by")
-    private String changedBy;
+    private String changedBy; //get from JWT
 
     @Column(name = "changed_at")
     private LocalDateTime changedAt;
-
-    /*
-•	History ID
-•	Case ID
-•	Old Status
-•	New Status
-    •	Comment
-    •	Changed By (user ID from JWT)
-    •	Timestamp
-
-     */
 }
