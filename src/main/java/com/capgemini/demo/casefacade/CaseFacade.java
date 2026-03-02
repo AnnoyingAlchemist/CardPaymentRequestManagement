@@ -3,6 +3,8 @@ package com.capgemini.demo.casefacade;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(
         name = "cases",
@@ -82,5 +84,14 @@ public class CaseFacade {
         this.identifier = identifier;
         this.transaction = transaction;
         this.outcome = outcome;
+    }
+
+    public boolean isOpen(){
+       return (this.classification.getStatus().equals("OPEN"));
+    }
+
+    public boolean isPastDue(){
+        LocalDateTime dueDate = this.classification.getDueDate();
+        return (!dueDate.isBefore(LocalDateTime.now()));
     }
 }
