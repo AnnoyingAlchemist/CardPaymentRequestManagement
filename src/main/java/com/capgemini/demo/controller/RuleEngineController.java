@@ -4,6 +4,7 @@ import com.capgemini.demo.casefacade.CaseFacade;
 import com.capgemini.demo.casehelper.CaseSummary;
 import com.capgemini.demo.ruleEngine.*;
 import com.capgemini.demo.service.RuleEngineService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,14 +21,16 @@ public class RuleEngineController {
     }
 
     @PostMapping("/evaluate")
+    @Operation(summary = "Evaluate a case based on predefined rules")
     public RuleSuggestion evalCase(@RequestBody CaseFacade c) {
         return ruleService.evalCase(new CaseSummary(c));
     }
-
+/*
     @PostMapping("/register-case")
     public String evaluateCase(@RequestBody CaseFacade c) {
         //caseService.getCase(c.getId());
         ruleEngine.evaluateCase(new CaseSummary(c));
         return "Case priority and recommendation";
     }
+ */
 }
