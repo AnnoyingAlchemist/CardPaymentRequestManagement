@@ -3,10 +3,15 @@ package com.capgemini.demo.controller;
 import com.capgemini.demo.casefacade.CaseFacade;
 import com.capgemini.demo.casehelper.CaseHistory;
 import com.capgemini.demo.service.CaseService;
-//import jakarta.validation.Valid;
 import io.swagger.v3.oas.annotations.Operation;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -31,10 +36,27 @@ public class CaseController {
         return service.getCase(id);
     }
 
+    /**
+     * GET /cases with optional filters + basic pagination
+     * Filters: status, caseType, priority, assignedTo, createdFrom, createdTo
+     * Pagination: page (default 0), size (default 20), sorting by id desc
+     */
     @GetMapping
-    @Operation(summary = "Returns a list of all cases in the database.")
-    public List<CaseFacade> all() {
-        return service.getAllCases();
+    @Operation(summary = "List cases with optional filters and pagination.")
+    public Page<CaseFacade> searchCases(
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) String caseType,
+            @RequestParam(required = false) String priority,
+            @RequestParam(required = false) String assignedTo,
+            @RequestParam(required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime createdFrom,
+            @RequestParam(required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime createdTo,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size
+    ) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
+        return service.searchCases(status, caseType, priority, assignedTo, createdFrom, createdTo, pageable);
     }
 
     @PutMapping("/{id}")
@@ -46,7 +68,7 @@ public class CaseController {
     }
 
     @PutMapping("/{caseId}/status")
-    @Operation(summary = "Updates the status of a case. Should only allow certain state transitions")
+    @Operation(summary = "Updates the status of a case. Enforces allowed state transitions and uniqueness rule.")
     public CaseFacade updateStatus(
             @PathVariable Long caseId,
             @RequestParam String newStatus) {
