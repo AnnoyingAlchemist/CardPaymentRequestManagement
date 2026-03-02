@@ -1,33 +1,43 @@
 package com.capgemini.demo.security;
 
-import jakarta.servlet.*;
+import com.capgemini.demo.service.JwtService;
+import io.jsonwebtoken.Claims;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
-import java.io.IOException;
-
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import java.io.IOException;
+import java.util.ArrayList;
 
 @Component
-public class JwtFilter implements Filter {
-
-    private final JwtUtil jwtUtil;
-
-    public JwtFilter(JwtUtil jwtUtil) {
-        this.jwtUtil = jwtUtil;
-    }
-
+public class JwtFilter extends OncePerRequestFilter {
+    @Autowired
+    private JwtService jwtService;
     @Override
-    public void doFilter(ServletRequest req, ServletResponse res,
-                         FilterChain chain)
-            throws IOException, ServletException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        String authHeader = request.getHeader("Authorization");
+        String token = null;
 
-        HttpServletRequest request = (HttpServletRequest) req;
-        String header = request.getHeader("Authorization");
-
-        if (header != null && header.startsWith("Bearer ")) {
-            String token = header.substring(7);
-            jwtUtil.validateToken(token);
+        if(authHeader != null && authHeader.startsWith("Bearer")){
+            token = authHeader.substring(7);
         }
-
-        chain.doFilter(req, res);
+        if(token!=null && SecurityContextHolder.getContext().getAuthentication() == null){
+            Claims claims = jwtService.verifySignatureAndExtractClaims(token);
+            if(!jwtService.isTokenExpired(token)){
+                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken
+                        = new UsernamePasswordAuthenticationToken(claims.getSubject(), null, new ArrayList<>());//TODO: setup array list with real roles
+                usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+            }
+        }
+        filterChain.doFilter(request, response);
     }
 }

@@ -3,6 +3,7 @@ package com.capgemini.demo.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -21,8 +22,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     @Autowired
-    private UserDetailsService userDetailsService;
-    @Autowired
     private JwtFilter jwtFilter;
 
     @Bean
@@ -31,25 +30,18 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         request -> request
-                                .requestMatchers("/auth/login","/swagger-ui/**")
+                                .requestMatchers("/swagger-ui/**","/v3/api-docs*/**")
                                 .permitAll()
                                 .anyRequest()
-                                .authenticated())
+                                .authenticated()
+
+                )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         //.httpBasic(Customizer.withDefaults());
         //.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED));
         //http.formLogin(Customizer.withDefaults()); // Enables form
 
         return http.build();
-    }
-
-    @Bean
-    public AuthenticationManager authenticationManager(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder){
-        DaoAuthenticationProvider provider =
-                new DaoAuthenticationProvider(userDetailsService);
-        provider.setPasswordEncoder(passwordEncoder);
-        //provider.setPasswordEncoder(NoOpPasswordEncoder.getInstance());
-        return new ProviderManager(provider);
     }
 
     @Bean
