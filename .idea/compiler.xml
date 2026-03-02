@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="CardPaymentRequestManagement (1)" />
+        <module name="card-request-payment-management" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -18,6 +19,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="CardPaymentRequestManagement" options="-parameters" />
       <module name="CardPaymentRequestManagement (1)" options="-parameters" />
+      <module name="card-request-payment-management" options="-parameters" />
     </option>
   </component>
 </project>

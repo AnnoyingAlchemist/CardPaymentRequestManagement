@@ -1,6 +1,7 @@
 package com.capgemini.demo.controller;
 
 import com.capgemini.demo.casefacade.CaseFacade;
+import com.capgemini.demo.casehelper.CaseHistory;
 import com.capgemini.demo.service.CaseService;
 //import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
@@ -37,6 +38,25 @@ public class CaseController {
             @PathVariable Long id,
             @RequestBody CaseFacade updatedCase) {
         return service.updateCase(id, updatedCase);
+    }
+
+    @PutMapping("/{caseId}/status")
+    public CaseFacade updateStatus(
+            @PathVariable Long caseId,
+            @RequestParam String newStatus) {
+        return service.updateStatus(caseId, newStatus);
+    }
+
+    @PutMapping("/{caseId}/assignee")
+    public CaseFacade updateAssignee(
+            @PathVariable Long caseId,
+            @RequestParam String assignee) {
+        return service.updateAssignee(caseId, assignee);
+    }
+
+    @GetMapping("/{caseId}/history")
+    public List<CaseHistory> getCaseHistory(@PathVariable Long caseId) {
+        return service.getCaseHistoryById(caseId);
     }
 
     @DeleteMapping("/{id}")
