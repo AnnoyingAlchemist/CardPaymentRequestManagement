@@ -31,7 +31,7 @@ public class CaseController {
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Gets a case from the database by its unique id")
+    @Operation(summary = "Gets a case by id")
     public CaseFacade getCase(@PathVariable Long id) {
         return service.getCase(id);
     }
@@ -39,7 +39,7 @@ public class CaseController {
     /**
      * GET /cases with optional filters + basic pagination
      * Filters: status, caseType, priority, assignedTo, createdFrom, createdTo
-     * Pagination: page (default 0), size (default 20), sorting by id desc
+     * Pagination: page (default 0), size (default 20), sorted by id desc
      */
     @GetMapping
     @Operation(summary = "List cases with optional filters and pagination.")
@@ -60,7 +60,7 @@ public class CaseController {
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Updates a case - selected by its id")
+    @Operation(summary = "Updates a case by id")
     public CaseFacade updateCase(
             @PathVariable Long id,
             @RequestBody CaseFacade updatedCase) {
@@ -68,7 +68,7 @@ public class CaseController {
     }
 
     @PutMapping("/{caseId}/status")
-    @Operation(summary = "Updates the status of a case. Enforces allowed state transitions and uniqueness rule.")
+    @Operation(summary = "Updates the status of a case")
     public CaseFacade updateStatus(
             @PathVariable Long caseId,
             @RequestParam String newStatus) {
@@ -76,7 +76,7 @@ public class CaseController {
     }
 
     @PutMapping("/{caseId}/assignee")
-    @Operation(summary = "Updates who is assigned to a case.")
+    @Operation(summary = "Updates who is assigned to a case")
     public CaseFacade updateAssignee(
             @PathVariable Long caseId,
             @RequestParam String assignee) {
@@ -84,7 +84,7 @@ public class CaseController {
     }
 
     @GetMapping("/{caseId}/history")
-    @Operation(summary = "Shows the history of a given case.")
+    @Operation(summary = "Shows the history of a given case")
     public List<CaseHistory> getCaseHistory(@PathVariable Long caseId) {
         return service.getCaseHistoryById(caseId);
     }

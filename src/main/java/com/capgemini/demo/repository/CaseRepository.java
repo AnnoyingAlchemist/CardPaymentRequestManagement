@@ -19,23 +19,26 @@ public interface CaseRepository extends JpaRepository<CaseFacade, Long> {
             String status
     );
 
-    // Current status only (no entity hydration)
     @Query("SELECT c.classification.status FROM CaseFacade c WHERE c.id = :id")
     String findStatusById(@Param("id") Long id);
 
-    // Case tuple (caseType, txnId) only (no entity hydration)
     @Query("SELECT c.identifier.caseType, c.identifier.primaryTransactionId FROM CaseFacade c WHERE c.id = :id")
     Object[] findCaseTypeAndTxnIdByCaseId(@Param("id") Long id);
 
-    // Optional filters + pagination
+    /**
+     * NOTE:
+     * - We DO NOT send NULLs anymore. Service maps missing filters to:
+     *   status/caseType/priority/assignedTo -> empty string ""
+     *   createdFrom/createdTo -> min/max dates
+     * - JPQL checks empty-string sentinels instead of :param IS NULL.
+     */
     @Query("""
         SELECT c FROM CaseFacade c
-        WHERE (:status IS NULL OR UPPER(c.classification.status) = UPPER(:status))
-          AND (:caseType IS NULL OR c.identifier.caseType = :caseType)
-          AND (:priority IS NULL OR UPPER(c.classification.priority) = UPPER(:priority))
-          AND (:assignedTo IS NULL OR c.assignment.assignedTo = :assignedTo)
-          AND (:createdFrom IS NULL OR c.assignment.createdAt >= :createdFrom)
-          AND (:createdTo IS NULL OR c.assignment.createdAt <= :createdTo)
+        WHERE (:status = '' OR c.classification.status = :status)
+          AND (:caseType = '' OR c.identifier.caseType = :caseType)
+          AND (:priority = '' OR c.classification.priority = :priority)
+          AND (:assignedTo = '' OR c.assignment.assignedTo = :assignedTo)
+          AND c.assignment.createdAt BETWEEN :createdFrom AND :createdTo
         """)
     Page<CaseFacade> searchCases(
             @Param("status") String status,
