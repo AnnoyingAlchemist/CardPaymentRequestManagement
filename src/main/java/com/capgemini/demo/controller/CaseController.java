@@ -38,7 +38,7 @@ public class CaseController {
 
     /**
      * GET /cases with optional filters + basic pagination
-     * Filters: status, caseType, priority, assignedTo, createdFrom, createdTo
+     * Filters: status, caseType, Priority, assignedTo, createdFrom, createdTo
      * Pagination: page (default 0), size (default 20), sorted by id desc
      */
     @GetMapping

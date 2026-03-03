@@ -30,7 +30,7 @@ public class RuleEngineController {
     public String evaluateCase(@RequestBody CaseFacade c) {
         //caseService.getCase(c.getId());
         ruleEngine.evaluateCase(new CaseSummary(c));
-        return "Case priority and recommendation";
+        return "Case Priority and recommendation";
     }
  */
 }

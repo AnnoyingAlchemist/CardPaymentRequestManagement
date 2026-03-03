@@ -1,6 +1,6 @@
 package com.capgemini.demo.ruleEngine;
 
-public enum priority {
+public enum Priority {
     UNKNOWN,
     LOW,
     MEDIUM,

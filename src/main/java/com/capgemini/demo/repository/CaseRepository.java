@@ -28,7 +28,7 @@ public interface CaseRepository extends JpaRepository<CaseFacade, Long> {
     /**
      * NOTE:
      * - We DO NOT send NULLs anymore. Service maps missing filters to:
-     *   status/caseType/priority/assignedTo -> empty string ""
+     *   status/caseType/Priority/assignedTo -> empty string ""
      *   createdFrom/createdTo -> min/max dates
      * - JPQL checks empty-string sentinels instead of :param IS NULL.
      */

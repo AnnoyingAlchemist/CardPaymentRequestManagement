@@ -7,6 +7,7 @@ import com.capgemini.demo.casefacade.CaseTransaction;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Getter
@@ -15,7 +16,7 @@ public class CaseSummary {
     //Note: Should not be a part of the CaseFacade
     //Meant primarily for use in RuleEngineService
     private String caseType;
-    private String transactionAmount;
+    private BigDecimal transactionAmount;
     private String transactionCurrency;
     private String transactionDateTime;
     private String merchantCategoryCode;

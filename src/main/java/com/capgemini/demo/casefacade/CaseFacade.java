@@ -3,6 +3,7 @@ package com.capgemini.demo.casefacade;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -72,7 +73,7 @@ public class CaseFacade {
             @AttributeOverride(name = "resolutionNotes", column = @Column(name = "resolution_notes"))
     })
     private CaseOutcome outcome;
-
+/*
     @Builder
     public CaseFacade(Long id, Boolean ruleEvalFailed, CaseClassification classification,
                       CaseAssignment assignment, CaseIdentifier identifier,
@@ -85,7 +86,7 @@ public class CaseFacade {
         this.transaction = transaction;
         this.outcome = outcome;
     }
-
+*/
     public boolean isOpen(){
        return (this.classification.getStatus().equals("OPEN"));
     }
@@ -94,4 +95,100 @@ public class CaseFacade {
         LocalDateTime dueDate = this.classification.getDueDate();
         return (!dueDate.isBefore(LocalDateTime.now()));
     }
+    /*
+    //assignment getters
+    public String getCreatedBy() {
+        return this.assignment.getCreatedBy();
+    }
+
+    public String getAssignedTo() {
+        return this.assignment.getAssignedTo();
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return this.assignment.getCreatedAt();
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return this.assignment.getUpdatedAt();
+    }
+
+    public LocalDateTime getResolvedAt() {
+        return this.assignment.getResolvedAt();
+    }
+
+    //classification getters
+    public String getStatus() {
+        return this.classification.getStatus();
+    }
+
+    //Note: Intellij shows this as already being used somewhere?
+    public String getPriority() {
+        return this.classification.getPriority();
+    }
+
+    public String getRecommendedNextAction() {
+        return this.classification.getRecommendedNextAction();
+    }
+
+    public LocalDateTime getDueDate() {
+        return this.classification.getDueDate();
+    }
+
+    //identifier getters
+    public String getCaseType() {
+        return this.identifier.getCaseType();
+    }
+
+    public String getPrimaryTransactionId() {
+        return this.identifier.getPrimaryTransactionId();
+    }
+
+    public String getCardNumberMasked() {
+        return this.identifier.getCardNumberMasked();
+    }
+
+    public String getCardToken() {
+        return this.identifier.getCardToken();
+    }
+
+    public String getCustomerId() {
+        return this.identifier.getCustomerId();
+    }
+
+    //resolution getters
+    public String getResolution() {
+        return this.outcome.getResolution();
+    }
+
+    public String getResolutionNotes() {
+        return this.outcome.getResolutionNotes();
+    }
+
+    //transaction getters
+    public BigDecimal getTransactionAmount() {
+        return this.transaction.getTransactionAmount();
+    }
+
+    public String getTransactionCurrency() {
+        return this.transaction.getTransactionCurrency();
+    }
+
+    public String getTransactionDateTime() {
+        return this.transaction.getTransactionDateTime();
+    }
+
+    public String getMerchantCategoryCode() {
+        return this.transaction.getMerchantCategoryCode();
+    }
+
+    public String getScheme() {
+        return this.transaction.getScheme();
+    }
+
+    public String getTransactionCountry() {
+        return this.transaction.getTransactionCountry();
+    }
+    */
+
 }

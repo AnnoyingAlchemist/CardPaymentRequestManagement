@@ -13,4 +13,5 @@ public class CaseOutcome {
 
     private String resolution;
     private String resolutionNotes;
+
 }

@@ -33,11 +33,11 @@ public class RuleEngineService {
                 break;
             default:
                 ruleEngine.setRuleset(new UnknownRule());
-                //UnknownRule should return unknown priority
+                //UnknownRule should return unknown Priority
                 //set rule_eval_failed flag to true
                 break;
         }
-        RuleSuggestion suggestion = new RuleSuggestion();
+        RuleSuggestion suggestion;
         suggestion = ruleEngine.evaluateCase(c);
         //TODO: Modify case to update suggestion
 

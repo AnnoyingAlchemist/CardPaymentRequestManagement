@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 @Service
 public class ReportingService {
     public String getCaseSummaryReport(List<CaseFacade> caseFacadeList){
+        // CaseId: Resolution
         Map<Long, String> closedCases =
                 caseFacadeList.stream()
                         .filter(c->!c.isOpen())

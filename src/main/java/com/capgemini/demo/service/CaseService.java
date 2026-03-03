@@ -8,7 +8,7 @@ import com.capgemini.demo.casehelper.CaseSummary;
 import com.capgemini.demo.repository.CaseHistoryRepository;
 import com.capgemini.demo.repository.CaseRepository;
 import com.capgemini.demo.ruleEngine.RuleSuggestion;
-import com.capgemini.demo.ruleEngine.priority;
+import com.capgemini.demo.ruleEngine.Priority;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -78,7 +78,7 @@ public class CaseService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "CaseType, TransactionId and Status are required");
         }
 
-        // Normalize status/priority on write
+        // Normalize status/Priority on write
         c.getClassification().setStatus(c.getClassification().getStatus().trim().toUpperCase());
         if (c.getClassification().getPriority() != null) {
             c.getClassification().setPriority(c.getClassification().getPriority().trim().toUpperCase());
@@ -102,7 +102,7 @@ public class CaseService {
         // Rule engine enrichment
         RuleEngineService ruleService = new RuleEngineService();
         RuleSuggestion suggestion = ruleService.evalCase(new CaseSummary(c));
-        if (suggestion.getPriority() == priority.UNKNOWN) {
+        if (suggestion.getPriority() == Priority.UNKNOWN) {
             c.setRuleEvalFailed(true);
         }
         c.getClassification().setPriority(suggestion.getPriority().name());
@@ -137,7 +137,7 @@ public class CaseService {
      * Option A fix:
      *  - Do NOT pass NULL params to the repository (Postgres cannot infer types in ">= ?" / "<= ?").
      *  - Use empty-string "" sentinels for text filters and wide date bounds for date range.
-     *  - Normalize status/priority to UPPER_CASE to keep equality consistent (no UPPER() on DB columns).
+     *  - Normalize status/Priority to UPPER_CASE to keep equality consistent (no UPPER() on DB columns).
      */
     @Transactional(readOnly = true)
     public Page<CaseFacade> searchCases(
