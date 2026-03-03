@@ -109,8 +109,9 @@ public class CaseService {
         c.getClassification().setRecommendedNextAction(suggestion.getRecommendedNextAction());
 
         try {
-            addCaseToHistory(c, "created", c.getClassification().getStatus());
-            return repository.save(c);
+            repository.save(c);
+            addNewCaseToHistory(c, "created", c.getClassification().getStatus());
+            return c;
         } catch (DataIntegrityViolationException dive) {
             throw new ResponseStatusException(
                     HttpStatus.CONFLICT,
@@ -351,6 +352,19 @@ public class CaseService {
         CaseHistory historyEntry = CaseHistory.builder()
                 .caseId(caseEntry)
                 .oldStatus(caseEntry.getClassification() == null ? null : caseEntry.getClassification().getStatus())
+                .newStatus(newStatus)
+                .comment(comment)
+                .changedBy(caseEntry.getAssignment() == null ? null : caseEntry.getAssignment().getAssignedTo())
+                .changedAt(LocalDateTime.now())
+                .build();
+
+        historyRepository.save(historyEntry);
+    }
+
+    public void addNewCaseToHistory(CaseFacade caseEntry, String comment, String newStatus){
+        CaseHistory historyEntry = CaseHistory.builder()
+                .caseId(caseEntry)
+                .oldStatus(null)
                 .newStatus(newStatus)
                 .comment(comment)
                 .changedBy(caseEntry.getAssignment() == null ? null : caseEntry.getAssignment().getAssignedTo())

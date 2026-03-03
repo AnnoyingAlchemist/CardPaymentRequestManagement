@@ -4,31 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4df6bd1a-47e5-456f-a810-2b3b0fe1f0b9" name="Changes" comment="Reporting Service implemented.">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/casefacade/StatusCode.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/ruleEngine/Action.java" afterDir="false" />
+    <list default="true" id="4df6bd1a-47e5-456f-a810-2b3b0fe1f0b9" name="Changes" comment="TransactionAmount type switched to BigDecimal. DB changed accordingly.">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/casefacade/CaseStatusCode.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/casefacade/CaseTypeCode.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/casefacade/CaseFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/casefacade/CaseFacade.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/casefacade/CaseOutcome.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/casefacade/CaseOutcome.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/casefacade/CaseTransaction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/casefacade/CaseTransaction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/casehelper/CaseSummary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/casehelper/CaseSummary.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/controller/CaseController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/controller/CaseController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/controller/RuleEngineController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/controller/RuleEngineController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/repository/CaseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/repository/CaseRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/ruleEngine/RuleSuggestion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/ruleEngine/RuleSuggestion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/ruleEngine/priority.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/ruleEngine/Priority.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/ruleEngine/rules/CardStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/ruleEngine/rules/CardStatus.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/ruleEngine/rules/Chargeback.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/ruleEngine/rules/Chargeback.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/ruleEngine/rules/CustomerDispute.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/ruleEngine/rules/CustomerDispute.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/ruleEngine/rules/Fraud.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/ruleEngine/rules/Fraud.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/ruleEngine/rules/UnknownRule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/ruleEngine/rules/UnknownRule.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/ruleEngine/Action.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/ruleEngine/Action.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/service/CaseService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/service/CaseService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/service/ReportingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/service/ReportingService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/service/RuleEngineService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/service/RuleEngineService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/capgemini/demo/casefacade/CaseFacade.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/capgemini/demo/casefacade/CaseFacade.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/capgemini/demo/casefacade/CaseTransaction.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/capgemini/demo/casefacade/CaseTransaction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/capgemini/demo/controller/CaseController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/capgemini/demo/controller/CaseController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/capgemini/demo/service/CaseService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/capgemini/demo/service/CaseService.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -276,7 +262,15 @@
       <option name="project" value="LOCAL" />
       <updated>1772484025163</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="TransactionAmount type switched to BigDecimal. DB changed accordingly.">
+      <option name="closed" value="true" />
+      <created>1772574756567</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1772574756567</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -293,7 +287,8 @@
     <MESSAGE value="Swagger config updated, JWT wired into endpoints" />
     <MESSAGE value="Reporting service skeleton added" />
     <MESSAGE value="Reporting Service implemented." />
-    <option name="LAST_COMMIT_MESSAGE" value="Reporting Service implemented." />
+    <MESSAGE value="TransactionAmount type switched to BigDecimal. DB changed accordingly." />
+    <option name="LAST_COMMIT_MESSAGE" value="TransactionAmount type switched to BigDecimal. DB changed accordingly." />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/CardPaymentRequestManagement$CardRequestPaymentManagementApplication.ic" NAME="CardRequestPaymentManagementApplication Coverage Results" MODIFIED="1771623532968" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">

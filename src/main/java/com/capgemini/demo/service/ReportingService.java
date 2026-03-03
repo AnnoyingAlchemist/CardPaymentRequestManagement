@@ -28,7 +28,11 @@ public class ReportingService {
         Predicate<CaseFacade> nearlyDue = c -> (!c.isPastDue() &&
                 (LocalDateTime.now()
                         .until(c.getClassification()
-                                .getDueDate(), TimeUnit.DAYS.toChronoUnit())) <= 3);
+                                .getDueDate(), TimeUnit.DAYS.toChronoUnit())) <= 3 ) &&
+                (!c.isPastDue() &&
+                        (LocalDateTime.now()
+                                .until(c.getClassification()
+                                        .getDueDate(), TimeUnit.DAYS.toChronoUnit())) > 0);
 
         Map<Long, LocalDateTime> overdueCases = caseFacadeList.stream()
                 .filter(CaseFacade::isPastDue)
@@ -59,15 +63,15 @@ Nearly overdue Cases:
         List<CaseFacade> oneToThreeDays = caseFacadeList.stream()
                 .filter(cardOpCase ->
                         ((cardOpCase.getAssignment().getCreatedAt()
-                                .until(LocalDateTime.now(), TimeUnit.DAYS.toChronoUnit())) >= 3)
+                                .until(LocalDateTime.now(), TimeUnit.DAYS.toChronoUnit())) <= 3)
                                 &&((cardOpCase.getAssignment().getCreatedAt()
-                                .until(LocalDateTime.now(), TimeUnit.DAYS.toChronoUnit())) <= 1))
+                                .until(LocalDateTime.now(), TimeUnit.DAYS.toChronoUnit())) > 1))
                 .toList();
 
         List<CaseFacade> threeToSevenDays = caseFacadeList.stream()
                 .filter(cardOpCase ->
                         ((cardOpCase.getAssignment().getCreatedAt()
-                                .until(LocalDateTime.now(), TimeUnit.DAYS.toChronoUnit())) >= 3)
+                                .until(LocalDateTime.now(), TimeUnit.DAYS.toChronoUnit())) > 3)
                                 &&((cardOpCase.getAssignment().getCreatedAt()
                                 .until(LocalDateTime.now(), TimeUnit.DAYS.toChronoUnit())) <= 7))
                 .toList();
@@ -75,7 +79,7 @@ Nearly overdue Cases:
         List<CaseFacade> greaterThanSevenDays = caseFacadeList.stream()
                 .filter(cardOpCase ->
                         (cardOpCase.getAssignment().getCreatedAt()
-                                .until(LocalDateTime.now(), TimeUnit.DAYS.toChronoUnit())) <= 1)
+                                .until(LocalDateTime.now(), TimeUnit.DAYS.toChronoUnit())) > 7)
                 .toList();
         return STR."""
 Report by caseID:

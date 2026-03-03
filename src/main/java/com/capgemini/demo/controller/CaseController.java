@@ -1,6 +1,8 @@
 package com.capgemini.demo.controller;
 
 import com.capgemini.demo.casefacade.CaseFacade;
+import com.capgemini.demo.casefacade.CaseStatusCode;
+import com.capgemini.demo.casefacade.CaseTypeCode;
 import com.capgemini.demo.casehelper.CaseHistory;
 import com.capgemini.demo.service.CaseService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -11,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -29,7 +32,29 @@ public class CaseController {
     public CaseFacade createCase(@RequestBody CaseFacade c) {
         return service.createCase(c);
     }
+/*
+    @PostMapping("/simple")
+    @Operation(summary = "Creates a case based off key attributes")
+    public CaseFacade createCaseSimple(@RequestParam String transactionId,
+                                       @RequestParam CaseTypeCode caseType,
+                                       @RequestParam BigDecimal transactionAmount,
+                                       @RequestParam String currency,
+                                       @RequestParam String cardToken,
+                                       @RequestParam String createdBy) {
+        CaseFacade c = new CaseFacade();
+        c.getIdentifier().setPrimaryTransactionId(transactionId);
+        c.getIdentifier().setCaseType(caseType.name());
+        c.getTransaction().setTransactionAmount(transactionAmount);
+        c.getTransaction().setTransactionCurrency(currency);
+        c.getIdentifier().setCardToken(cardToken);
+        c.getAssignment().setCreatedBy(createdBy);
 
+        c.getClassification().setStatus(CaseStatusCode.OPEN.name());
+        c.getAssignment().setCreatedAt(LocalDateTime.now());
+
+        return service.createCase(c);
+    }
+*/
     @GetMapping("/{id}")
     @Operation(summary = "Gets a case by id")
     public CaseFacade getCase(@PathVariable Long id) {

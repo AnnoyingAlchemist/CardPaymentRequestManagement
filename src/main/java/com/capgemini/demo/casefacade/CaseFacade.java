@@ -95,7 +95,7 @@ public class CaseFacade {
         LocalDateTime dueDate = this.classification.getDueDate();
         return (!dueDate.isBefore(LocalDateTime.now()));
     }
-    /*
+
     //assignment getters
     public String getCreatedBy() {
         return this.assignment.getCreatedBy();
@@ -189,6 +189,6 @@ public class CaseFacade {
     public String getTransactionCountry() {
         return this.transaction.getTransactionCountry();
     }
-    */
+
 
 }
