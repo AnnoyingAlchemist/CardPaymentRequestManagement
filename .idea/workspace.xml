@@ -4,10 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4df6bd1a-47e5-456f-a810-2b3b0fe1f0b9" name="Changes" comment="TransactionAmount type switched to BigDecimal. DB changed accordingly.">
+    <list default="true" id="4df6bd1a-47e5-456f-a810-2b3b0fe1f0b9" name="Changes" comment="Random unversioned files">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/capgemini/demo/security/JwtUtil.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/casefacade/CaseFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/casefacade/CaseFacade.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/controller/CaseController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/controller/CaseController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/ruleEngine/Action.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/ruleEngine/Action.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/ruleEngine/rules/Chargeback.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/ruleEngine/rules/Chargeback.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/ruleEngine/rules/CustomerDispute.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/ruleEngine/rules/CustomerDispute.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/ruleEngine/rules/Fraud.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/ruleEngine/rules/Fraud.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/ruleEngine/rules/UnknownRule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/ruleEngine/rules/UnknownRule.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/security/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/security/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/com/capgemini/demo/CardRequestPaymentManagementApplicationTests.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/com/capgemini/demo/CardRequestPaymentManagementApplicationTests.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -91,11 +98,11 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "Application.CardRequestPaymentManagementApplication.executor": "Debug",
+    "Application.CardRequestPaymentManagementApplication.executor": "Run",
     "Gradle.Build demo.executor": "Run",
     "Gradle.Load Gradle Dependencies.executor": "Run",
     "Gradle.demo [:com.capgemini.demo.CardRequestPaymentManagementApplication.main()].executor": "Run",
-    "JUnit.ReportingServiceTest.executor": "Run",
+    "JUnit.ReportingServiceTest.executor": "Coverage",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
@@ -120,7 +127,7 @@
       <recent name="com.capgemini.demo.service" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.ReportingServiceTest">
+  <component name="RunManager" selected="Application.CardRequestPaymentManagementApplication">
     <configuration name="CardRequestPaymentManagementApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.capgemini.demo.CardRequestPaymentManagementApplication" />
       <module name="CardPaymentRequestManagement (1)" />
@@ -135,7 +142,7 @@
       </method>
     </configuration>
     <configuration name="ReportingServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="card-request-payment-management" />
+      <module name="CardPaymentRequestManagement (1)" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="com.capgemini.demo.*" />
@@ -144,6 +151,7 @@
       </extension>
       <option name="PACKAGE_NAME" value="com.capgemini.demo" />
       <option name="MAIN_CLASS_NAME" value="com.capgemini.demo.ReportingServiceTest" />
+      <option name="METHOD_NAME" value="" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -162,8 +170,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.ReportingServiceTest" />
         <item itemvalue="Application.CardRequestPaymentManagementApplication" />
+        <item itemvalue="JUnit.ReportingServiceTest" />
       </list>
     </recent_temporary>
   </component>
@@ -312,6 +320,9 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/CardPaymentRequestManagement$CardRequestPaymentManagementApplication.ic" NAME="CardRequestPaymentManagementApplication Coverage Results" MODIFIED="1771623532968" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>com.capgemini.demo.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/CardPaymentRequestManagement$ReportingServiceTest.ic" NAME="ReportingServiceTest Coverage Results" MODIFIED="1772646842091" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
       <FILTER>com.capgemini.demo.*</FILTER>
     </SUITE>
   </component>

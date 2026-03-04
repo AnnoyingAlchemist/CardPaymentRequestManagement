@@ -9,7 +9,7 @@ public class Fraud implements RuleSet {
     @Override
     public RuleSuggestion evaluate(CaseSummary c) {
         RuleSuggestion suggestion = new RuleSuggestion();
-        //TODO: implement actual rule logic
+        //TODO
         suggestion.setRecommendedNextAction("None");
         suggestion.setPriority(Priority.UNKNOWN);
 
