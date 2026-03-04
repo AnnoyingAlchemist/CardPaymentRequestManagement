@@ -4,16 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4df6bd1a-47e5-456f-a810-2b3b0fe1f0b9" name="Changes" comment="User roles integrated into case service for authorization.">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/casefacade/Role.java" afterDir="false" />
+    <list default="true" id="4df6bd1a-47e5-456f-a810-2b3b0fe1f0b9" name="Changes" comment="TransactionAmount type switched to BigDecimal. DB changed accordingly.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/security/JwtFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/security/JwtFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/security/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/security/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/capgemini/demo/CardRequestPaymentManagementApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/capgemini/demo/CardRequestPaymentManagementApplicationTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/capgemini/demo/security/JwtFilter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/capgemini/demo/security/JwtFilter.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/capgemini/demo/security/JwtUtil.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/capgemini/demo/security/SecurityConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/capgemini/demo/security/SecurityConfig.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -95,27 +89,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.CardRequestPaymentManagementApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Build demo.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Load Gradle Dependencies.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.demo [:com.capgemini.demo.CardRequestPaymentManagementApplication.main()].executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CardRequestPaymentManagementApplicationTests.executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/bpayero/OneDrive - Capgemini/Documents/GitHub/CardPaymentRequestManagement&quot;,
-    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/bpayero/OneDrive - Capgemini/Documents/GitHub/CardPaymentRequestManagement/src/main/java/org/example/Main.java&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.CardRequestPaymentManagementApplication.executor": "Debug",
+    "Gradle.Build demo.executor": "Run",
+    "Gradle.Load Gradle Dependencies.executor": "Run",
+    "Gradle.demo [:com.capgemini.demo.CardRequestPaymentManagementApplication.main()].executor": "Run",
+    "JUnit.ReportingServiceTest.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/bpayero/OneDrive - Capgemini/Documents/GitHub/CardPaymentRequestManagement",
+    "onboarding.tips.debug.path": "C:/Users/bpayero/OneDrive - Capgemini/Documents/GitHub/CardPaymentRequestManagement/src/main/java/org/example/Main.java",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.pluginManager"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\bpayero\OneDrive - Capgemini\Documents\GitHub\CardPaymentRequestManagement" />
@@ -123,11 +117,10 @@
       <recent name="C:\Users\bpayero\OneDrive - Capgemini\Documents\GitHub\CardPaymentRequestManagement\src" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="com.capgemini.demo.casefacade" />
       <recent name="com.capgemini.demo.service" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="JUnit.ReportingServiceTest">
     <configuration name="CardRequestPaymentManagementApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.capgemini.demo.CardRequestPaymentManagementApplication" />
       <module name="CardPaymentRequestManagement (1)" />
@@ -137,6 +130,21 @@
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ReportingServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="card-request-payment-management" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.capgemini.demo.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.capgemini.demo" />
+      <option name="MAIN_CLASS_NAME" value="com.capgemini.demo.ReportingServiceTest" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -154,6 +162,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.ReportingServiceTest" />
         <item itemvalue="Application.CardRequestPaymentManagementApplication" />
       </list>
     </recent_temporary>
@@ -270,16 +279,19 @@
       <option name="project" value="LOCAL" />
       <updated>1772574756567</updated>
     </task>
-    <task id="LOCAL-00014" summary="Bugifxing in ReportingService. Aging buckets for cases should now no longer have overlap.">
-      <option name="closed" value="true" />
-      <created>1772581166963</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1772581166963</updated>
-    </task>
-    <option name="localTasksCounter" value="15" />
+    <option name="localTasksCounter" value="14" />
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="updated config file, tested and working." />
@@ -296,8 +308,7 @@
     <MESSAGE value="Reporting service skeleton added" />
     <MESSAGE value="Reporting Service implemented." />
     <MESSAGE value="TransactionAmount type switched to BigDecimal. DB changed accordingly." />
-    <MESSAGE value="Bugifxing in ReportingService. Aging buckets for cases should now no longer have overlap." />
-    <option name="LAST_COMMIT_MESSAGE" value="Bugifxing in ReportingService. Aging buckets for cases should now no longer have overlap." />
+    <option name="LAST_COMMIT_MESSAGE" value="TransactionAmount type switched to BigDecimal. DB changed accordingly." />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/CardPaymentRequestManagement$CardRequestPaymentManagementApplication.ic" NAME="CardRequestPaymentManagementApplication Coverage Results" MODIFIED="1771623532968" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
