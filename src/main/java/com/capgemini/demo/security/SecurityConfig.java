@@ -33,7 +33,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/cases/**")
                                 .hasAnyRole(Role.SYSTEM.name(),Role.AGENT.name(), Role.OPS_MANAGER.name(),Role.FRAUD_ANALYST.name())
 
-                                .requestMatchers(HttpMethod.POST, "/cases/**")
+                                .requestMatchers(HttpMethod.POST, "/cases")
                                 .hasAnyRole(Role.SYSTEM.name(),Role.AGENT.name(), Role.OPS_MANAGER.name(),Role.FRAUD_ANALYST.name())
 
                                 .requestMatchers(HttpMethod.DELETE, "/cases/**")

@@ -14,6 +14,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -29,7 +30,10 @@ public class CaseController {
 
     @PostMapping
     @Operation(summary = "Creates a case")
-    public CaseFacade createCase(@RequestBody CaseFacade c) {
+    public CaseFacade createCase(@RequestBody CaseFacade c, Principal user) {
+        if(user != null){
+            c.getAssignment().setCreatedBy(user.getName());
+        }
         return service.createCase(c);
     }
 

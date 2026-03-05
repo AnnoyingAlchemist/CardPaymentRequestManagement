@@ -4,17 +4,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4df6bd1a-47e5-456f-a810-2b3b0fe1f0b9" name="Changes" comment="Random unversioned files">
+    <list default="true" id="4df6bd1a-47e5-456f-a810-2b3b0fe1f0b9" name="Changes" comment="Added @JsonIgnore to CaseFacade helper methods">
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/capgemini/demo/RuleEngineServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2_25_2026_3_41_PM_[Changes]/CaseService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2_25_2026_3_41_PM_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2_25_2026_3_41_PM__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2_26_2026_1_30_PM_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2_26_2026_1_30_PM__Changes_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/casefacade/CaseFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/casefacade/CaseFacade.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/casefacade/CaseStatusCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/casefacade/CaseStatusCode.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/controller/CaseController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/controller/CaseController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/ruleEngine/Action.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/ruleEngine/Action.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/ruleEngine/rules/Chargeback.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/ruleEngine/rules/Chargeback.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/ruleEngine/rules/CustomerDispute.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/ruleEngine/rules/CustomerDispute.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/ruleEngine/rules/CardStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/ruleEngine/rules/CardStatus.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/ruleEngine/rules/Fraud.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/ruleEngine/rules/Fraud.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/ruleEngine/rules/UnknownRule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/ruleEngine/rules/UnknownRule.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/security/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/security/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/com/capgemini/demo/CardRequestPaymentManagementApplicationTests.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/com/capgemini/demo/CardRequestPaymentManagementApplicationTests.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/service/CaseService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/service/CaseService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/capgemini/demo/ruleEngine/rules/CardStatus.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/capgemini/demo/ruleEngine/rules/CardStatus.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/capgemini/demo/ruleEngine/rules/Fraud.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/capgemini/demo/ruleEngine/rules/Fraud.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/capgemini/demo/ruleEngine/rules/UnknownRule.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/capgemini/demo/ruleEngine/rules/UnknownRule.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,8 +62,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Interface" />
-        <option value="Class" />
         <option value="Enum" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -98,11 +105,11 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "Application.CardRequestPaymentManagementApplication.executor": "Run",
+    "Application.CardRequestPaymentManagementApplication.executor": "Debug",
     "Gradle.Build demo.executor": "Run",
     "Gradle.Load Gradle Dependencies.executor": "Run",
     "Gradle.demo [:com.capgemini.demo.CardRequestPaymentManagementApplication.main()].executor": "Run",
-    "JUnit.ReportingServiceTest.executor": "Coverage",
+    "JUnit.ReportingServiceTest.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
@@ -287,7 +294,15 @@
       <option name="project" value="LOCAL" />
       <updated>1772574756567</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Added @JsonIgnore to CaseFacade helper methods">
+      <option name="closed" value="true" />
+      <created>1772653603613</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1772653603613</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -316,7 +331,8 @@
     <MESSAGE value="Reporting service skeleton added" />
     <MESSAGE value="Reporting Service implemented." />
     <MESSAGE value="TransactionAmount type switched to BigDecimal. DB changed accordingly." />
-    <option name="LAST_COMMIT_MESSAGE" value="TransactionAmount type switched to BigDecimal. DB changed accordingly." />
+    <MESSAGE value="Added @JsonIgnore to CaseFacade helper methods" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added @JsonIgnore to CaseFacade helper methods" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/CardPaymentRequestManagement$CardRequestPaymentManagementApplication.ic" NAME="CardRequestPaymentManagementApplication Coverage Results" MODIFIED="1771623532968" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">

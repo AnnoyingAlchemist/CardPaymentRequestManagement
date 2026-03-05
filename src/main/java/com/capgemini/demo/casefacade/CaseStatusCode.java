@@ -8,5 +8,4 @@ public enum CaseStatusCode {
     RESOLVED_CUSTOMER_FAVOUR,
     RESOLVED_BANK_FAVOUR,
     CLOSED
-
 }
