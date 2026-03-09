@@ -1,0 +1,170 @@
+Index: src/main/java/com/capgemini/demo/controller/RuleEngineController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.capgemini.demo.controller;\r\n\r\nimport com.capgemini.demo.casefacade.CaseFacade;\r\nimport com.capgemini.demo.ruleEngine.*;\r\nimport com.capgemini.demo.ruleEngine.rules.*;\r\nimport com.capgemini.demo.service.CaseService;\r\nimport com.capgemini.demo.service.RuleEngineService;\r\nimport org.springframework.web.bind.annotation.PostMapping;\r\nimport org.springframework.web.bind.annotation.RequestBody;\r\nimport org.springframework.web.bind.annotation.RequestMapping;\r\nimport org.springframework.web.bind.annotation.RestController;\r\n\r\n@RestController\r\n@RequestMapping(\"/rules\")\r\npublic class RuleEngineController {\r\n    private final RuleEngineService ruleService;\r\n    private final CaseService caseService;\r\n    private RuleEngine ruleEngine;\r\n\r\n    public RuleEngineController(RuleEngineService service, CaseService caseService) {\r\n        this.ruleService = service;\r\n        this.caseService = caseService;\r\n    }\r\n\r\n\r\n    @PostMapping(\"/evaluate\")\r\n    public RuleSuggestion evalCase(@RequestBody CaseFacade c) {\r\n        return ruleService.evalCase(c);\r\n    }\r\n\r\n    @PostMapping(\"/register-case\")\r\n    public String evaluateCase(@RequestBody CaseFacade c) {\r\n        caseService.getCase(c.getId());\r\n        ruleEngine.evaluateCase(c);\r\n        return \"Case priority and recommendation\";\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/capgemini/demo/controller/RuleEngineController.java b/src/main/java/com/capgemini/demo/controller/RuleEngineController.java
+--- a/src/main/java/com/capgemini/demo/controller/RuleEngineController.java	(revision aead65e0ad779b76e16b19ba38cb748db56ee5dc)
++++ b/src/main/java/com/capgemini/demo/controller/RuleEngineController.java	(date 1772044584296)
+@@ -5,6 +5,7 @@
+ import com.capgemini.demo.ruleEngine.rules.*;
+ import com.capgemini.demo.service.CaseService;
+ import com.capgemini.demo.service.RuleEngineService;
++import org.springframework.beans.factory.annotation.Autowired;
+ import org.springframework.web.bind.annotation.PostMapping;
+ import org.springframework.web.bind.annotation.RequestBody;
+ import org.springframework.web.bind.annotation.RequestMapping;
+@@ -14,12 +15,10 @@
+ @RequestMapping("/rules")
+ public class RuleEngineController {
+     private final RuleEngineService ruleService;
+-    private final CaseService caseService;
+     private RuleEngine ruleEngine;
+ 
+-    public RuleEngineController(RuleEngineService service, CaseService caseService) {
++    public RuleEngineController(RuleEngineService service) {
+         this.ruleService = service;
+-        this.caseService = caseService;
+     }
+ 
+ 
+@@ -30,7 +29,7 @@
+ 
+     @PostMapping("/register-case")
+     public String evaluateCase(@RequestBody CaseFacade c) {
+-        caseService.getCase(c.getId());
++        //caseService.getCase(c.getId());
+         ruleEngine.evaluateCase(c);
+         return "Case priority and recommendation";
+     }
+Index: src/main/java/com/capgemini/demo/service/RuleEngineService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.capgemini.demo.service;\r\n\r\nimport com.capgemini.demo.casefacade.CaseFacade;\r\nimport com.capgemini.demo.repository.CaseRepository;\r\nimport com.capgemini.demo.ruleEngine.RuleEngine;\r\nimport com.capgemini.demo.ruleEngine.RuleSuggestion;\r\nimport com.capgemini.demo.ruleEngine.rules.*;\r\nimport org.springframework.stereotype.Service;\r\n\r\n@Service\r\npublic class RuleEngineService {\r\n    private CaseService caseService;\r\n    private RuleEngine ruleEngine;\r\n\r\n    public RuleEngineService(CaseService caseService) {\r\n        this.caseService = caseService;\r\n    }\r\n\r\n    public RuleSuggestion evalCase(CaseFacade c){\r\n        caseService.getCase(c.getId());\r\n        switch(c.getIdentifier().getCaseType()){\r\n            case \"FRAUD_INVESTIGATION\":\r\n                ruleEngine.setRuleset(new Fraud());\r\n                break;\r\n            case \"CUSTOMER_DISPUTE\":\r\n                ruleEngine.setRuleset(new CustomerDispute());\r\n                break;\r\n            case \"CHARGEBACK\":\r\n                ruleEngine.setRuleset(new Chargeback());\r\n                break;\r\n            case \"CARD_STATUS\":\r\n                ruleEngine.setRuleset(new CardStatus());\r\n                break;\r\n            default:\r\n                ruleEngine.setRuleset(new UnknownRule());\r\n                //UnknownRule should return unknown priority\r\n                //set rule_eval_failed flag to true\r\n                break;\r\n        }\r\n        RuleSuggestion suggestion = new RuleSuggestion();\r\n        suggestion = ruleEngine.evaluateCase(c);\r\n        //Modify case to update suggestion\r\n\r\n        return suggestion;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/capgemini/demo/service/RuleEngineService.java b/src/main/java/com/capgemini/demo/service/RuleEngineService.java
+--- a/src/main/java/com/capgemini/demo/service/RuleEngineService.java	(revision aead65e0ad779b76e16b19ba38cb748db56ee5dc)
++++ b/src/main/java/com/capgemini/demo/service/RuleEngineService.java	(date 1772040943039)
+@@ -9,15 +9,15 @@
+ 
+ @Service
+ public class RuleEngineService {
+-    private CaseService caseService;
+-    private RuleEngine ruleEngine;
++    //private CaseService caseService;
++    //private RuleEngine ruleEngine = new RuleEngine(new UnknownRule());
+ 
+-    public RuleEngineService(CaseService caseService) {
+-        this.caseService = caseService;
++    public RuleEngineService() {
+     }
+ 
+-    public RuleSuggestion evalCase(CaseFacade c){
+-        caseService.getCase(c.getId());
++    public static RuleSuggestion evalCase(CaseFacade c){
++        //caseService.getCase(c.getId());
++        RuleEngine ruleEngine = new RuleEngine(new UnknownRule());
+         switch(c.getIdentifier().getCaseType()){
+             case "FRAUD_INVESTIGATION":
+                 ruleEngine.setRuleset(new Fraud());
+@@ -39,7 +39,7 @@
+         }
+         RuleSuggestion suggestion = new RuleSuggestion();
+         suggestion = ruleEngine.evaluateCase(c);
+-        //Modify case to update suggestion
++        //TODO: Modify case to update suggestion
+ 
+         return suggestion;
+     }
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"4df6bd1a-47e5-456f-a810-2b3b0fe1f0b9\" name=\"Changes\" comment=\"rules for RuleEngine added with placeholder implementations. evalCase updated in RuleEngineController.\">\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/com/capgemini/demo/controller/RuleEngineController.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/com/capgemini/demo/controller/RuleEngineController.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/com/capgemini/demo/ruleEngine/RuleEngine.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/com/capgemini/demo/ruleEngine/RuleEngine.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/com/capgemini/demo/ruleEngine/rules/Chargeback.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/com/capgemini/demo/ruleEngine/rules/Chargeback.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/com/capgemini/demo/service/RuleEngineService.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/com/capgemini/demo/service/RuleEngineService.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/target/classes/com/capgemini/demo/casefacade/CaseFacade.class\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/target/classes/com/capgemini/demo/casefacade/CaseFacade.class\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"ExternalProjectsData\">\r\n    <projectState path=\"$PROJECT_DIR$/demo\">\r\n      <ProjectState />\r\n    </projectState>\r\n  </component>\r\n  <component name=\"ExternalProjectsManager\">\r\n    <system id=\"GRADLE\">\r\n      <state>\r\n        <task path=\"$PROJECT_DIR$/demo\">\r\n          <activation />\r\n        </task>\r\n        <projects_view>\r\n          <tree_state>\r\n            <expand>\r\n              <path>\r\n                <item name=\"\" type=\"6a2764b6:ExternalProjectsStructure$RootNode\" />\r\n                <item name=\"demo\" type=\"f1a62948:ProjectNode\" />\r\n              </path>\r\n              <path>\r\n                <item name=\"\" type=\"6a2764b6:ExternalProjectsStructure$RootNode\" />\r\n                <item name=\"demo\" type=\"f1a62948:ProjectNode\" />\r\n                <item name=\"Dependencies\" type=\"6de06a37:ExternalSystemViewDefaultContributor$MyDependenciesNode\" />\r\n              </path>\r\n            </expand>\r\n            <select />\r\n          </tree_state>\r\n        </projects_view>\r\n      </state>\r\n    </system>\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Interface\" />\r\n        <option value=\"Enum\" />\r\n        <option value=\"Class\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <excluded-from-favorite>\r\n      <branch-storage>\r\n        <map>\r\n          <entry type=\"REMOTE\">\r\n            <value>\r\n              <list>\r\n                <branch-info repo=\"$PROJECT_DIR$\" source=\"origin/main\" />\r\n              </list>\r\n            </value>\r\n          </entry>\r\n        </map>\r\n      </branch-storage>\r\n    </excluded-from-favorite>\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"GitHubPullRequestSearchHistory\">{\r\n  &quot;lastFilter&quot;: {\r\n    &quot;state&quot;: &quot;OPEN&quot;,\r\n    &quot;assignee&quot;: &quot;AnnoyingAlchemist&quot;\r\n  }\r\n}</component>\r\n  <component name=\"GithubPullRequestsUISettings\">{\r\n  &quot;selectedUrlAndAccountId&quot;: {\r\n    &quot;url&quot;: &quot;https://github.com/AnnoyingAlchemist/CardPaymentRequestManagement.git&quot;,\r\n    &quot;accountId&quot;: &quot;02744421-869b-4782-82c4-0a7426afd03d&quot;\r\n  }\r\n}</component>\r\n  <component name=\"ProjectColorInfo\">{\r\n  &quot;associatedIndex&quot;: 7\r\n}</component>\r\n  <component name=\"ProjectId\" id=\"39dJVs6IVmMwQne3ATL96eAdf7b\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">{\r\n  &quot;keyToString&quot;: {\r\n    &quot;Application.CardRequestPaymentManagementApplication.executor&quot;: &quot;Run&quot;,\r\n    &quot;Gradle.Build demo.executor&quot;: &quot;Run&quot;,\r\n    &quot;Gradle.Load Gradle Dependencies.executor&quot;: &quot;Run&quot;,\r\n    &quot;Gradle.demo [:com.capgemini.demo.CardRequestPaymentManagementApplication.main()].executor&quot;: &quot;Run&quot;,\r\n    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,\r\n    &quot;git-widget-placeholder&quot;: &quot;main&quot;,\r\n    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,\r\n    &quot;last_opened_file_path&quot;: &quot;C:/Users/bpayero/OneDrive - Capgemini/Documents/GitHub/CardPaymentRequestManagement&quot;,\r\n    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/bpayero/OneDrive - Capgemini/Documents/GitHub/CardPaymentRequestManagement/src/main/java/org/example/Main.java&quot;,\r\n    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,\r\n    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,\r\n    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,\r\n    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;\r\n  }\r\n}</component>\r\n  <component name=\"RecentsManager\">\r\n    <key name=\"MoveFile.RECENT_KEYS\">\r\n      <recent name=\"C:\\Users\\bpayero\\OneDrive - Capgemini\\Documents\\GitHub\\CardPaymentRequestManagement\" />\r\n      <recent name=\"C:\\Users\\bpayero\\OneDrive - Capgemini\\Documents\\GitHub\\CardPaymentRequestManagement\\demo\\out\" />\r\n      <recent name=\"C:\\Users\\bpayero\\OneDrive - Capgemini\\Documents\\GitHub\\CardPaymentRequestManagement\\src\" />\r\n    </key>\r\n  </component>\r\n  <component name=\"RunManager\">\r\n    <configuration name=\"CardRequestPaymentManagementApplication\" type=\"Application\" factoryName=\"Application\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"com.capgemini.demo.CardRequestPaymentManagementApplication\" />\r\n      <module name=\"CardPaymentRequestManagement (1)\" />\r\n      <extension name=\"coverage\">\r\n        <pattern>\r\n          <option name=\"PATTERN\" value=\"com.capgemini.demo.*\" />\r\n          <option name=\"ENABLED\" value=\"true\" />\r\n        </pattern>\r\n      </extension>\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration default=\"true\" type=\"JetRunConfigurationType\">\r\n      <module name=\"CardPaymentRequestManagement\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration default=\"true\" type=\"KotlinStandaloneScriptRunConfigurationType\">\r\n      <module name=\"CardPaymentRequestManagement\" />\r\n      <option name=\"filePath\" />\r\n      <method v=\"2\" />\r\n    </configuration>\r\n    <recent_temporary>\r\n      <list>\r\n        <item itemvalue=\"Application.CardRequestPaymentManagementApplication\" />\r\n      </list>\r\n    </recent_temporary>\r\n  </component>\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"4df6bd1a-47e5-456f-a810-2b3b0fe1f0b9\" name=\"Changes\" comment=\"\" />\r\n      <created>1771020040396</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1771020040396</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"updated config file, tested and working.\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1771625476279</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1771625476279</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00002\" summary=\"Rule Engine Service skeleton added\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1771864287875</created>\r\n      <option name=\"number\" value=\"00002\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1771864287875</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00003\" summary=\"rules for RuleEngine added with placeholder implementations. evalCase updated in RuleEngineController.\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1771961179723</created>\r\n      <option name=\"number\" value=\"00003\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1771961179723</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"4\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\"updated config file, tested and working.\" />\r\n    <MESSAGE value=\"Rule Engine Service skeleton added\" />\r\n    <MESSAGE value=\"rules for RuleEngine added with placeholder implementations. evalCase updated in RuleEngineController.\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"rules for RuleEngine added with placeholder implementations. evalCase updated in RuleEngineController.\" />\r\n  </component>\r\n  <component name=\"com.intellij.coverage.CoverageDataManagerImpl\">\r\n    <SUITE FILE_PATH=\"coverage/CardPaymentRequestManagement$CardRequestPaymentManagementApplication.ic\" NAME=\"CardRequestPaymentManagementApplication Coverage Results\" MODIFIED=\"1771623532968\" SOURCE_PROVIDER=\"com.intellij.coverage.DefaultCoverageFileProvider\" RUNNER=\"idea\" COVERAGE_BY_TEST_ENABLED=\"false\" COVERAGE_TRACING_ENABLED=\"true\">\r\n      <FILTER>com.capgemini.demo.*</FILTER>\r\n    </SUITE>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision aead65e0ad779b76e16b19ba38cb748db56ee5dc)
++++ b/.idea/workspace.xml	(date 1772040356990)
+@@ -4,13 +4,12 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="4df6bd1a-47e5-456f-a810-2b3b0fe1f0b9" name="Changes" comment="rules for RuleEngine added with placeholder implementations. evalCase updated in RuleEngineController.">
++    <list default="true" id="4df6bd1a-47e5-456f-a810-2b3b0fe1f0b9" name="Changes" comment="Business logic for RuleEngineController moved to RuleEngineService.">
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/controller/RuleEngineController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/controller/RuleEngineController.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/ruleEngine/RuleEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/ruleEngine/RuleEngine.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/ruleEngine/rules/Chargeback.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/ruleEngine/rules/Chargeback.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/service/CaseService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/service/CaseService.java" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/service/RuleEngineService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/service/RuleEngineService.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/target/classes/com/capgemini/demo/casefacade/CaseFacade.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/capgemini/demo/casefacade/CaseFacade.class" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/target/classes/com/capgemini/demo/service/CaseService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/capgemini/demo/service/CaseService.class" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -182,14 +181,23 @@
+       <option name="project" value="LOCAL" />
+       <updated>1771961179723</updated>
+     </task>
+-    <option name="localTasksCounter" value="4" />
++    <task id="LOCAL-00004" summary="Business logic for RuleEngineController moved to RuleEngineService.">
++      <option name="closed" value="true" />
++      <created>1771973806553</created>
++      <option name="number" value="00004" />
++      <option name="presentableId" value="LOCAL-00004" />
++      <option name="project" value="LOCAL" />
++      <updated>1771973806553</updated>
++    </task>
++    <option name="localTasksCounter" value="5" />
+     <servers />
+   </component>
+   <component name="VcsManagerConfiguration">
+     <MESSAGE value="updated config file, tested and working." />
+     <MESSAGE value="Rule Engine Service skeleton added" />
+     <MESSAGE value="rules for RuleEngine added with placeholder implementations. evalCase updated in RuleEngineController." />
+-    <option name="LAST_COMMIT_MESSAGE" value="rules for RuleEngine added with placeholder implementations. evalCase updated in RuleEngineController." />
++    <MESSAGE value="Business logic for RuleEngineController moved to RuleEngineService." />
++    <option name="LAST_COMMIT_MESSAGE" value="Business logic for RuleEngineController moved to RuleEngineService." />
+   </component>
+   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+     <SUITE FILE_PATH="coverage/CardPaymentRequestManagement$CardRequestPaymentManagementApplication.ic" NAME="CardRequestPaymentManagementApplication Coverage Results" MODIFIED="1771623532968" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+Index: src/main/java/com/capgemini/demo/service/CaseService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.capgemini.demo.service;\r\n\r\nimport com.capgemini.demo.casefacade.CaseFacade;\r\nimport com.capgemini.demo.repository.CaseRepository;\r\n//import jakarta.validation.Valid;\r\nimport org.springframework.stereotype.Service;\r\n\r\nimport java.util.List;\r\n\r\n@Service\r\npublic class CaseService {\r\n\r\n    private final CaseRepository repository;\r\n\r\n    public CaseService(CaseRepository repository) {\r\n        this.repository = repository;\r\n    }\r\n\r\n    public CaseFacade createCase(CaseFacade c) {\r\n        if (c.getIdentifier() == null ||\r\n            c.getIdentifier().getCustomerId() == null ||\r\n            c.getIdentifier().getCustomerId().isBlank()) {\r\n            throw new IllegalArgumentException(\"Customer ID required\");\r\n        }\r\n        c.setId(null);\r\n\r\n        return repository.save(c);\r\n    }\r\n\r\n    public CaseFacade getCase(Long id) {\r\n        return repository.findById(id)\r\n                .orElseThrow(() -> new RuntimeException(\"Case with ID \" + id + \" not found\"));\r\n    }\r\n\r\n    public List<CaseFacade> getAllCases() {\r\n        return repository.findAll();\r\n    }\r\n\r\n    \r\n    public CaseFacade updateCase(Long id, CaseFacade updatedCase) {\r\n        CaseFacade existing = repository.findById(id)\r\n                .orElseThrow(() -> new RuntimeException(\"Case with ID \" + id + \"not found\"));\r\n\r\n        if (updatedCase.getRuleEvalFailed() != null) {\r\n            existing.setRuleEvalFailed(updatedCase.getRuleEvalFailed());\r\n        }\r\n\r\n        if (updatedCase.getClassification() != null) {\r\n            existing.setClassification(updatedCase.getClassification());\r\n        }\r\n\r\n        if (updatedCase.getAssignment() != null) {\r\n            existing.setAssignment(updatedCase.getAssignment());\r\n        }\r\n\r\n        if (updatedCase.getIdentifier() != null) {\r\n            existing.setIdentifier(updatedCase.getIdentifier());\r\n        }\r\n\r\n        if (updatedCase.getTransaction() != null) {\r\n            existing.setTransaction(updatedCase.getTransaction());\r\n        }\r\n\r\n        if (updatedCase.getOutcome() != null) {\r\n            existing.setOutcome(updatedCase.getOutcome());\r\n        }\r\n\r\n        return repository.save(existing);\r\n    }\r\n\r\n\r\n    public void deleteCase(Long id) {\r\n        CaseFacade existing = repository.findById(id)\r\n                .orElseThrow(() ->\r\n                    new RuntimeException(\"Case with ID \" + id + \" not found\"));\r\n\r\n        repository.deleteById(id);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/capgemini/demo/service/CaseService.java b/src/main/java/com/capgemini/demo/service/CaseService.java
+--- a/src/main/java/com/capgemini/demo/service/CaseService.java	(revision aead65e0ad779b76e16b19ba38cb748db56ee5dc)
++++ b/src/main/java/com/capgemini/demo/service/CaseService.java	(date 1772041017463)
+@@ -3,10 +3,13 @@
+ import com.capgemini.demo.casefacade.CaseFacade;
+ import com.capgemini.demo.repository.CaseRepository;
+ //import jakarta.validation.Valid;
++import com.capgemini.demo.ruleEngine.RuleSuggestion;
+ import org.springframework.stereotype.Service;
+ 
+ import java.util.List;
+ 
++import static com.capgemini.demo.service.RuleEngineService.evalCase;
++
+ @Service
+ public class CaseService {
+ 
+@@ -24,6 +27,10 @@
+         }
+         c.setId(null);
+ 
++        //RuleEngineService ruleEngine = new RuleEngineService();
++        RuleSuggestion suggestion = evalCase(c);
++        c.getClassification().setPriority(suggestion.getPriority().name());
++        c.getClassification().setRecommendedNextAction(suggestion.getRecommendedNextAction());
+         return repository.save(c);
+     }
+ 

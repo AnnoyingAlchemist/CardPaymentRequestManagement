@@ -1,5 +1,6 @@
 package com.capgemini.demo.casefacade;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -90,15 +91,17 @@ public class CaseFacade {
         this.outcome = outcome;
     }
 */
+    @JsonIgnore
     public boolean isOpen(){
        return (this.classification.getStatus().equals("OPEN"));
     }
 
+    @JsonIgnore
     public boolean isPastDue(){
         LocalDateTime dueDate = this.classification.getDueDate();
         return (!dueDate.isBefore(LocalDateTime.now()));
     }
-
+/*
     //assignment getters
     public String getCreatedBy() {
         return this.assignment.getCreatedBy();
@@ -192,6 +195,6 @@ public class CaseFacade {
     public String getTransactionCountry() {
         return this.transaction.getTransactionCountry();
     }
-
+*/
 
 }
