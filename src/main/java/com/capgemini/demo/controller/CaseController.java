@@ -55,6 +55,45 @@ public class CaseController {
         return service.createCase(c);
     }
 */
+
+
+    public static final String CONTRACT_GET_CASES = """
+    Contract: GET /cases with filters
+    Request:
+      GET /cases?status=OPEN&priority=HIGH&page=0&size=20
+    Response:
+      status: 200
+      body: { "content": [...], "number":0, "size":20 }
+    """;
+
+    public static final String CONTRACT_INVALID_TRANSITION = """
+    Contract: PUT /cases/{id}/status invalid transition
+    Request:
+      PUT /cases/10/status?newStatus=IN_REVIEW
+    Response:
+      status: 409
+      body: { "error":"Conflict" }
+    """;
+
+    // ==============================
+// BDD SCENARIO DEFINITIONS
+// ==============================
+    public static final String BDD_STATUS_TRANSITION = """
+    Feature: Status transitions
+      Scenario: Allowed transition OPEN -> IN_REVIEW
+        Given a case exists with status "OPEN"
+        When the client updates the case status to "IN_REVIEW"
+        Then the response status should be 200
+    """;
+
+    public static final String BDD_SEARCH_FILTERS = """
+    Feature: Searching cases
+      Scenario: Filter by OPEN status
+        Given cases exist with various statuses
+        When the client searches for status "OPEN"
+        Then only OPEN cases should be returned
+    """;
+
     @GetMapping("/{id}")
     @Operation(summary = "Gets a case by id")
     public CaseFacade getCase(@PathVariable Long id) {
@@ -119,4 +158,6 @@ public class CaseController {
     public void deleteCase(@PathVariable Long id) {
         service.deleteCase(id);
     }
+
+
 }

@@ -18,7 +18,7 @@ public class CaseSummary {
     private String caseType;
     private BigDecimal transactionAmount;
     private String transactionCurrency;
-    private String transactionDateTime;
+    private LocalDateTime transactionDateTime;
     private String merchantCategoryCode;
     private String scheme;
     private String customerId;

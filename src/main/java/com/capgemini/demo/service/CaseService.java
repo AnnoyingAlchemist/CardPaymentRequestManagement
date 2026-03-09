@@ -3,6 +3,7 @@ package com.capgemini.demo.service;
 import com.capgemini.demo.casefacade.CaseAssignment;
 import com.capgemini.demo.casefacade.CaseClassification;
 import com.capgemini.demo.casefacade.CaseFacade;
+import com.capgemini.demo.casefacade.CaseIdentifier;
 import com.capgemini.demo.casehelper.CaseHistory;
 import com.capgemini.demo.casehelper.CaseSummary;
 import com.capgemini.demo.repository.CaseHistoryRepository;
@@ -372,5 +373,56 @@ public class CaseService {
                 .build();
 
         historyRepository.save(historyEntry);
+    }
+
+    /**
+     * Clears all repositories for BDD scenario isolation.
+     */
+    public void _bdd_resetState() {
+        if (!"test".equals(System.getProperty("spring.profiles.active"))) {
+            throw new IllegalStateException("BDD reset only allowed in test profile");
+        }
+        historyRepository.deleteAll();
+        repository.deleteAll();
+    }
+
+    /**
+     * Helper for BDD: create a case with a specific status.
+     */
+    public CaseFacade _bdd_createCaseWithStatus(String status) {
+        if (!"test".equals(System.getProperty("spring.profiles.active"))) {
+            throw new IllegalStateException("BDD helper only allowed in test profile");
+        }
+
+        CaseFacade c = new CaseFacade();
+        CaseClassification cls = new CaseClassification();
+        cls.setStatus(status.toUpperCase());
+        c.setClassification(cls);
+
+        CaseIdentifier idf = new CaseIdentifier();
+        idf.setCaseType("FRAUD_INVESTIGATION");
+        idf.setPrimaryTransactionId("BDD-" + System.nanoTime());
+        idf.setCustomerId("BDD-CUST");
+        c.setIdentifier(idf);
+
+        CaseAssignment assign = new CaseAssignment();
+        assign.setCreatedAt(LocalDateTime.now().minusDays(1));
+        assign.setAssignedTo("tester");
+        c.setAssignment(assign);
+
+        return repository.save(c);
+    }
+
+    /**
+     * Allows contract tests to insert controlled cases
+     * without going through the full validation / rule engine.
+     * Only active when Spring profile 'test' is enabled.
+     */
+    public CaseFacade _contract_seedCaseForTesting(CaseFacade c) {
+        if (!"test".equals(System.getProperty("spring.profiles.active"))) {
+            throw new IllegalStateException("This helper is for contract tests only");
+        }
+        c.setId(null);
+        return repository.save(c);
     }
 }

@@ -60,7 +60,10 @@ public class CaseFacade {
     @AttributeOverrides({
             @AttributeOverride(name = "transactionAmount", column = @Column(name = "transaction_amount")),
             @AttributeOverride(name = "transactionCurrency", column = @Column(name = "transaction_currency")),
-            @AttributeOverride(name = "transactionDateTime", column = @Column(name = "transaction_date_time")),
+            @AttributeOverride(
+                    name = "transactionDateTime",
+                    column = @Column(name = "transaction_date_time")
+            ),
             @AttributeOverride(name = "merchantCategoryCode", column = @Column(name = "merchant_category_code")),
             @AttributeOverride(name = "scheme", column = @Column(name = "scheme")),
             @AttributeOverride(name = "transactionCountry", column = @Column(name = "transaction_country"))
@@ -174,7 +177,7 @@ public class CaseFacade {
         return this.transaction.getTransactionCurrency();
     }
 
-    public String getTransactionDateTime() {
+    public LocalDateTime getTransactionDateTime() {
         return this.transaction.getTransactionDateTime();
     }
 
