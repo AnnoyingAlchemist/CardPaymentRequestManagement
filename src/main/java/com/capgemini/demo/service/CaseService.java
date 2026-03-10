@@ -135,7 +135,7 @@ public class CaseService {
         return repository.findAll();
     }
 
-    /**
+    /* *
      * GET /cases with optional filters + pagination.
      * Option A fix:
      *  - Do NOT pass NULL params to the repository (Postgres cannot infer types in ">= ?" / "<= ?").

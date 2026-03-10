@@ -3,6 +3,7 @@ package com.capgemini.demo.controller;
 import com.capgemini.demo.casefacade.CaseFacade;
 import com.capgemini.demo.casefacade.CaseStatusCode;
 import com.capgemini.demo.casefacade.CaseTypeCode;
+import com.capgemini.demo.casefacade.Role;
 import com.capgemini.demo.casehelper.CaseHistory;
 import com.capgemini.demo.service.CaseService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -11,6 +12,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -29,12 +32,13 @@ public class CaseController {
 
     @PostMapping
     @Operation(summary = "Creates a case")
+    @PreAuthorize("hasAnyRole('SYSTEM','FRAUD_ANALYST','OPS_MANAGER','AGENT','DISPUTE_ANALYST')")
     public CaseFacade createCase(@RequestBody CaseFacade c) {
         return service.createCase(c);
     }
 /*
     @PostMapping("/simple")
-    @Operation(summary = "Creates a case based off key attributes")
+    @Operation(summary = "Creates a case based on key attributes")
     public CaseFacade createCaseSimple(@RequestParam String transactionId,
                                        @RequestParam CaseTypeCode caseType,
                                        @RequestParam BigDecimal transactionAmount,
@@ -96,6 +100,10 @@ public class CaseController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Gets a case by id")
+    @PreAuthorize("hasAnyRole('SYSTEM','FRAUD_ANALYST','OPS_MANAGER','AGENT','DISPUTE_ANALYST')")
+    @PostAuthorize("returnObject.assignment.createdBy == authentication.name " +
+            "|| hasRole('OPS_MANAGER') " +
+            "|| hasRole('SYSTEM')")
     public CaseFacade getCase(@PathVariable Long id) {
         return service.getCase(id);
     }
@@ -103,10 +111,11 @@ public class CaseController {
     /**
      * GET /cases with optional filters + basic pagination
      * Filters: status, caseType, Priority, assignedTo, createdFrom, createdTo
-     * Pagination: page (default 0), size (default 20), sorted by id desc
+     * Pagination: page (default 0), size (default 20), sorted .;by id desc
      */
     @GetMapping
     @Operation(summary = "List cases with optional filters and pagination.")
+    @PreAuthorize("hasAnyRole('SYSTEM','FRAUD_ANALYST','OPS_MANAGER','AGENT','DISPUTE_ANALYST')")
     public Page<CaseFacade> searchCases(
             @RequestParam(required = false) String status,
             @RequestParam(required = false) String caseType,
@@ -125,6 +134,9 @@ public class CaseController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Updates a case by id")
+    @PreAuthorize("hasAnyRole('SYSTEM','FRAUD_ANALYST','OPS_MANAGER','AGENT','DISPUTE_ANALYST')")    //@PostAuthorize("returnObject.assignment.createdBy == authentication.name " +
+      //      "|| hasRole('OPS_MANAGER') " +
+        //    "|| hasRole('SYSTEM')")
     public CaseFacade updateCase(
             @PathVariable Long id,
             @RequestBody CaseFacade updatedCase) {
@@ -133,6 +145,7 @@ public class CaseController {
 
     @PutMapping("/{caseId}/status")
     @Operation(summary = "Updates the status of a case")
+    @PreAuthorize("hasAnyRole('SYSTEM','FRAUD_ANALYST','OPS_MANAGER','AGENT','DISPUTE_ANALYST')")
     public CaseFacade updateStatus(
             @PathVariable Long caseId,
             @RequestParam String newStatus) {
@@ -141,6 +154,7 @@ public class CaseController {
 
     @PutMapping("/{caseId}/assignee")
     @Operation(summary = "Updates who is assigned to a case")
+    @PreAuthorize("hasAnyRole('SYSTEM','FRAUD_ANALYST','OPS_MANAGER','AGENT','DISPUTE_ANALYST')")
     public CaseFacade updateAssignee(
             @PathVariable Long caseId,
             @RequestParam String assignee) {
@@ -149,12 +163,14 @@ public class CaseController {
 
     @GetMapping("/{caseId}/history")
     @Operation(summary = "Shows the history of a given case")
+    @PreAuthorize("hasAnyRole('SYSTEM','FRAUD_ANALYST','OPS_MANAGER','AGENT','DISPUTE_ANALYST')")
     public List<CaseHistory> getCaseHistory(@PathVariable Long caseId) {
         return service.getCaseHistoryById(caseId);
     }
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Deletes a case")
+    @PreAuthorize("hasAnyRole('SYSTEM','OPS_MANAGER')")
     public void deleteCase(@PathVariable Long id) {
         service.deleteCase(id);
     }

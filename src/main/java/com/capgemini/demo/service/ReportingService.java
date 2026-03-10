@@ -1,6 +1,8 @@
 package com.capgemini.demo.service;
 
 import com.capgemini.demo.casefacade.CaseFacade;
+import com.capgemini.demo.casefacade.CaseStatusCode;
+import com.capgemini.demo.ruleEngine.Priority;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -15,12 +17,83 @@ import java.util.stream.Collectors;
 @Service
 public class ReportingService {
     public String getCaseSummaryReport(List<CaseFacade> caseFacadeList){
-        // CaseId: Resolution
+        // Returns # of cases by type, status, and priority
+        /*
+
         Map<Long, String> closedCases =
                 caseFacadeList.stream()
                         .filter(c->!c.isOpen())
                         .collect(Collectors.toMap(CaseFacade::getId,c->c.getOutcome().getResolution()));
-        return STR."closed cases: \{closedCases}";
+         */
+        int closedCases =
+                caseFacadeList.stream()
+                        .filter(c->!c.isOpen())
+                        .mapToInt(x -> 1).sum();
+        int openCases =
+                caseFacadeList.stream()
+                        .filter(CaseFacade::isOpen)
+                        .mapToInt(x -> 1).sum();
+
+        int inReviewCases =
+                caseFacadeList.stream()
+                        .filter(c -> c.getStatus().equals(CaseStatusCode.IN_REVIEW.name()))
+                        .mapToInt(x -> 1).sum();
+
+        int pendingCustomerCases =
+                caseFacadeList.stream()
+                        .filter(c -> c.getStatus().equals(CaseStatusCode.PENDING_CUSTOMER.name()))
+                        .mapToInt(x -> 1).sum();
+
+        int pendingPartnerCases =
+                caseFacadeList.stream()
+                        .filter(c -> c.getStatus().equals(CaseStatusCode.PENDING_PARTNER.name()))
+                        .mapToInt(x -> 1).sum();
+        int resolvedCustomerFavorCases =
+                caseFacadeList.stream()
+                        .filter(c -> c.getStatus().equals(CaseStatusCode.RESOLVED_CUSTOMER_FAVOUR.name()))
+                        .mapToInt(x -> 1).sum();
+        int resolvedBankFavorCases =
+                caseFacadeList.stream()
+                        .filter(c -> c.getStatus().equals(CaseStatusCode.RESOLVED_BANK_FAVOUR.name()))
+                        .mapToInt(x -> 1).sum();
+
+        int lowPriorityCases =
+                caseFacadeList.stream()
+                        .filter(c -> c.getPriority().equals(Priority.LOW.name()))
+                        .mapToInt(x -> 1).sum();
+
+        int mediumPriorityCases =
+                caseFacadeList.stream()
+                        .filter(c -> c.getPriority().equals(Priority.MEDIUM.name()))
+                        .mapToInt(x -> 1).sum();
+
+        int highPriorityCases =
+                caseFacadeList.stream()
+                        .filter(c -> c.getPriority().equals(Priority.HIGH.name()))
+                        .mapToInt(x -> 1).sum();
+
+        int criticalPriorityCases =
+                caseFacadeList.stream()
+                        .filter(c -> c.getPriority().equals(Priority.CRITICAL.name()))
+                        .mapToInt(x -> 1).sum();
+
+        int unknownPriorityCases =
+                caseFacadeList.stream()
+                        .filter(c -> c.getPriority().equals(Priority.UNKNOWN.name()))
+                        .mapToInt(x -> 1).sum();
+
+        return STR."""
+open cases: \{openCases}
+closed cases: \{closedCases}
+cases in review: \{inReviewCases}
+pending customer cases: \{pendingCustomerCases}
+resolved customer favor cases: \{resolvedCustomerFavorCases}
+resolved bank favor cases: \{resolvedBankFavorCases}
+low priority cases: \{lowPriorityCases}
+medium priority cases: \{mediumPriorityCases}
+high priority cases: \{highPriorityCases}
+critical priority cases: \{criticalPriorityCases}
+unknown priority cases: \{unknownPriorityCases}""";
     }
 
     public String getCaseBacklogReport(List<CaseFacade> caseFacadeList){

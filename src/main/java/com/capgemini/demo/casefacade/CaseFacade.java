@@ -101,100 +101,117 @@ public class CaseFacade {
         LocalDateTime dueDate = this.classification.getDueDate();
         return (!dueDate.isBefore(LocalDateTime.now()));
     }
-/*
+
     //assignment getters
+    @JsonIgnore
     public String getCreatedBy() {
         return this.assignment.getCreatedBy();
     }
 
+    @JsonIgnore
     public String getAssignedTo() {
         return this.assignment.getAssignedTo();
     }
 
+    @JsonIgnore
     public LocalDateTime getCreatedAt() {
         return this.assignment.getCreatedAt();
     }
 
+    @JsonIgnore
     public LocalDateTime getUpdatedAt() {
         return this.assignment.getUpdatedAt();
     }
 
+    @JsonIgnore
     public LocalDateTime getResolvedAt() {
         return this.assignment.getResolvedAt();
     }
 
     //classification getters
+    @JsonIgnore
     public String getStatus() {
         return this.classification.getStatus();
     }
 
     //Note: Intellij shows this as already being used somewhere?
+    @JsonIgnore
     public String getPriority() {
         return this.classification.getPriority();
     }
 
+    @JsonIgnore
     public String getRecommendedNextAction() {
         return this.classification.getRecommendedNextAction();
     }
 
+    @JsonIgnore
     public LocalDateTime getDueDate() {
         return this.classification.getDueDate();
     }
 
     //identifier getters
+    @JsonIgnore
     public String getCaseType() {
         return this.identifier.getCaseType();
     }
 
+    @JsonIgnore
     public String getPrimaryTransactionId() {
         return this.identifier.getPrimaryTransactionId();
     }
 
+    @JsonIgnore
     public String getCardNumberMasked() {
         return this.identifier.getCardNumberMasked();
     }
 
+    @JsonIgnore
     public String getCardToken() {
         return this.identifier.getCardToken();
     }
 
+    @JsonIgnore
     public String getCustomerId() {
         return this.identifier.getCustomerId();
     }
 
     //resolution getters
+    @JsonIgnore
     public String getResolution() {
         return this.outcome.getResolution();
     }
 
+    @JsonIgnore
     public String getResolutionNotes() {
         return this.outcome.getResolutionNotes();
     }
 
     //transaction getters
+    @JsonIgnore
     public BigDecimal getTransactionAmount() {
         return this.transaction.getTransactionAmount();
     }
-
+    @JsonIgnore
     public String getTransactionCurrency() {
         return this.transaction.getTransactionCurrency();
     }
-
+    @JsonIgnore
     public LocalDateTime getTransactionDateTime() {
         return this.transaction.getTransactionDateTime();
     }
-
+    @JsonIgnore
     public String getMerchantCategoryCode() {
         return this.transaction.getMerchantCategoryCode();
     }
-
+    @JsonIgnore
     public String getScheme() {
         return this.transaction.getScheme();
     }
-
+    @JsonIgnore
     public String getTransactionCountry() {
         return this.transaction.getTransactionCountry();
     }
-*/
+
 
 }
