@@ -24,12 +24,15 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http){
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(req -> req
-                        .requestMatchers("/swagger-ui/**","/v3/api-docs*/**").permitAll()
-                        // VERSIONING: ADDED — authorize v1 POST as well
-                        .requestMatchers(HttpMethod.POST, "/cases", "/v1/cases")
-                        .hasAnyRole(Role.AGENT.name(), Role.OPS_MANAGER.name())
-                        .anyRequest().authenticated()
+                .authorizeHttpRequests(
+                        request -> request
+                                .requestMatchers("/swagger-ui/**","/v3/api-docs*/**").permitAll()
+
+                                // VERSIONING: ADDED — authorize POST for legacy + v1 + v2
+                                .requestMatchers(HttpMethod.POST, "/cases", "/v1/cases", "/v2/cases")
+                                .hasAnyRole(Role.AGENT.name(), Role.OPS_MANAGER.name())
+
+                                .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();

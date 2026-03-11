@@ -5,7 +5,7 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
-import io.swagger.v3.oas.models.servers.Server; // VERSIONING: ADDED
+import io.swagger.v3.oas.models.servers.Server;   // VERSIONING: ADDED
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -17,19 +17,24 @@ public class SwaggerConfig {
         return new OpenAPI()
                 .info(new Info()
                         .title("Card Payment Request Management Service")
-                        .version("1.0") // VERSIONING: ensure version is shown
+                        .version("1.0")
                         .description("""
-                                Documentation for the Card Payment Request Management API.
-                                This service supports **versioned** endpoints:
+                                This API supports versioned routes:
                                 - Legacy (unversioned): /
                                 - Version 1:            /v1
-                                """)) // VERSIONING: ADDED
-                // VERSIONING: ADDED — expose both servers in Swagger UI
+                                - Version 2:            /v2
+
+                                You can also use vendor media types:
+                                - Accept: application/vnd.cardops.v1+json
+                                - Accept: application/vnd.cardops.v2+json
+                                """))
+                // VERSIONING: ADDED — multiple servers for Swagger UI
                 .addServersItem(new Server().url("/").description("Legacy (unversioned)"))
                 .addServersItem(new Server().url("/v1").description("Version 1"))
+                .addServersItem(new Server().url("/v2").description("Version 2"))
                 .addSecurityItem(new SecurityRequirement().addList("Bearer Authentication"))
-                .components(new Components().addSecuritySchemes(
-                        "Bearer Authentication", createAPIKeyScheme()));
+                .components(new Components().addSecuritySchemes
+                        ("Bearer Authentication", createAPIKeyScheme()));
     }
 
     private SecurityScheme createAPIKeyScheme() {

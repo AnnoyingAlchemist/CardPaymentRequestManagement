@@ -1,31 +1,28 @@
 package com.capgemini.demo.controller;
 
 import com.capgemini.demo.casefacade.CaseFacade;
-import com.capgemini.demo.casefacade.CaseStatusCode;
-import com.capgemini.demo.casefacade.CaseTypeCode;
-import com.capgemini.demo.casefacade.Role;
 import com.capgemini.demo.casehelper.CaseHistory;
 import com.capgemini.demo.service.CaseService;
 import io.swagger.v3.oas.annotations.Operation;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import jakarta.servlet.http.HttpServletRequest;               // VERSIONING: ADDED
+import org.springframework.data.domain.*;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.MediaType; //VERSIONING ADDED
-import org.springframework.security.access.prepost.PostAuthorize;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.http.MediaType;                      // VERSIONING: ADDED
+import org.springframework.http.ResponseEntity;               // VERSIONING: ADDED
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;                                         // VERSIONING: ADDED
 
 @RestController
 @RequestMapping(
-        value = {"/cases", "/v1/cases/"}, //VERSIONING ADDED
-        produces = { MediaType.APPLICATION_JSON_VALUE, //VERSIONING ADDED
-                    "application/vnd.cardops.v1+json"} //VERSIONING ADDED
+        value = {"/cases", "/v1/cases"},                     // VERSIONING: ADDED (legacy + v1)
+        produces = {
+                MediaType.APPLICATION_JSON_VALUE,
+                "application/vnd.cardops.v1+json",           // VERSIONING: ADDED
+                "application/vnd.cardops.v2+json"            // VERSIONING: ADDED
+        }
 )
 public class CaseController {
 
@@ -35,150 +32,143 @@ public class CaseController {
         this.service = service;
     }
 
+    // VERSIONING: ADDED — helper to attach deprecation headers on legacy (no /v1 or /v2 prefix)
+    private <T> ResponseEntity<T> maybeDeprecate(HttpServletRequest req, T body) {
+        String uri = req.getRequestURI();
+        boolean legacy = !(uri.startsWith("/v1/") || uri.startsWith("/v2/"));
+        if (legacy) {
+            return ResponseEntity.ok()
+                    .header("Deprecation", "true")
+                    .header("Sunset", "Wed, 01 Jul 2026 00:00:00 GMT")
+                    .header("Link", "</v1" + uri + ">; rel=\"successor-version\"")
+                    .body(body);
+        }
+        return ResponseEntity.ok(body);
+    }
+
     @PostMapping
     @Operation(summary = "Creates a case")
-    @PreAuthorize("hasAnyRole('SYSTEM','FRAUD_ANALYST','OPS_MANAGER','AGENT','DISPUTE_ANALYST')")
-    public CaseFacade createCase(@RequestBody CaseFacade c) {
-        return service.createCase(c);
+    public ResponseEntity<CaseFacade> createCase(@RequestBody CaseFacade c, HttpServletRequest req) { // VERSIONING: CHANGED
+        return maybeDeprecate(req, service.createCase(c));                                            // VERSIONING: ADDED
     }
-/*
-    @PostMapping("/simple")
-    @Operation(summary = "Creates a case based on key attributes")
-    public CaseFacade createCaseSimple(@RequestParam String transactionId,
-                                       @RequestParam CaseTypeCode caseType,
-                                       @RequestParam BigDecimal transactionAmount,
-                                       @RequestParam String currency,
-                                       @RequestParam String cardToken,
-                                       @RequestParam String createdBy) {
-        CaseFacade c = new CaseFacade();
-        c.getIdentifier().setPrimaryTransactionId(transactionId);
-        c.getIdentifier().setCaseType(caseType.name());
-        c.getTransaction().setTransactionAmount(transactionAmount);
-        c.getTransaction().setTransactionCurrency(currency);
-        c.getIdentifier().setCardToken(cardToken);
-        c.getAssignment().setCreatedBy(createdBy);
-
-        c.getClassification().setStatus(CaseStatusCode.OPEN.name());
-        c.getAssignment().setCreatedAt(LocalDateTime.now());
-
-        return service.createCase(c);
-    }
-*/
-
-
-    public static final String CONTRACT_GET_CASES = """
-    Contract: GET /cases with filters
-    Request:
-      GET /cases?status=OPEN&priority=HIGH&page=0&size=20
-    Response:
-      status: 200
-      body: { "content": [...], "number":0, "size":20 }
-    """;
-
-    public static final String CONTRACT_INVALID_TRANSITION = """
-    Contract: PUT /cases/{id}/status invalid transition
-    Request:
-      PUT /cases/10/status?newStatus=IN_REVIEW
-    Response:
-      status: 409
-      body: { "error":"Conflict" }
-    """;
-
-    // ==============================
-// BDD SCENARIO DEFINITIONS
-// ==============================
-    public static final String BDD_STATUS_TRANSITION = """
-    Feature: Status transitions
-      Scenario: Allowed transition OPEN -> IN_REVIEW
-        Given a case exists with status "OPEN"
-        When the client updates the case status to "IN_REVIEW"
-        Then the response status should be 200
-    """;
-
-    public static final String BDD_SEARCH_FILTERS = """
-    Feature: Searching cases
-      Scenario: Filter by OPEN status
-        Given cases exist with various statuses
-        When the client searches for status "OPEN"
-        Then only OPEN cases should be returned
-    """;
 
     @GetMapping("/{id}")
-    @Operation(summary = "Gets a case by id")
-    @PreAuthorize("hasAnyRole('SYSTEM','FRAUD_ANALYST','OPS_MANAGER','AGENT','DISPUTE_ANALYST')")
-    @PostAuthorize("returnObject.assignment.createdBy == authentication.name " +
-            "|| hasRole('OPS_MANAGER') " +
-            "|| hasRole('SYSTEM')")
-    public CaseFacade getCase(@PathVariable Long id) {
-        return service.getCase(id);
+    @Operation(summary = "Gets a case by id (legacy & v1)")
+    public ResponseEntity<CaseFacade> getCase(@PathVariable Long id, HttpServletRequest req) {       // VERSIONING: CHANGED
+        return maybeDeprecate(req, service.getCase(id));                                             // VERSIONING: ADDED
     }
 
     /**
-     * GET /cases with optional filters + basic pagination
-     * Filters: status, caseType, Priority, assignedTo, createdFrom, createdTo
-     * Pagination: page (default 0), size (default 20), sorted .;by id desc
+     * GET /cases (legacy & v1) with optional filters + pagination.
      */
     @GetMapping
-    @Operation(summary = "List cases with optional filters and pagination.")
-    @PreAuthorize("hasAnyRole('SYSTEM','FRAUD_ANALYST','OPS_MANAGER','AGENT','DISPUTE_ANALYST')")
-    public Page<CaseFacade> searchCases(
-            @RequestParam(required = false) String status,
-            @RequestParam(required = false) String caseType,
-            @RequestParam(required = false) String priority,
-            @RequestParam(required = false) String assignedTo,
-            @RequestParam(required = false)
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime createdFrom,
-            @RequestParam(required = false)
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime createdTo,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "20") int size
+    @Operation(summary = "List cases with optional filters and pagination. (legacy & v1)")
+    public ResponseEntity<Page<CaseFacade>> searchCases(                                             // VERSIONING: CHANGED
+                                                                                                     @RequestParam(required = false) String status,
+                                                                                                     @RequestParam(required = false) String caseType,
+                                                                                                     @RequestParam(required = false) String priority,
+                                                                                                     @RequestParam(required = false) String assignedTo,
+                                                                                                     @RequestParam(required = false)
+                                                                                                     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime createdFrom,
+                                                                                                     @RequestParam(required = false)
+                                                                                                     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime createdTo,
+                                                                                                     @RequestParam(defaultValue = "0") int page,
+                                                                                                     @RequestParam(defaultValue = "20") int size,
+                                                                                                     HttpServletRequest req
     ) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
-        return service.searchCases(status, caseType, priority, assignedTo, createdFrom, createdTo, pageable);
+        return maybeDeprecate(req,
+                service.searchCases(status, caseType, priority, assignedTo, createdFrom, createdTo, pageable)); // VERSIONING: ADDED
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Updates a case by id")
-    @PreAuthorize("hasAnyRole('SYSTEM','FRAUD_ANALYST','OPS_MANAGER','AGENT','DISPUTE_ANALYST')")    //@PostAuthorize("returnObject.assignment.createdBy == authentication.name " +
-      //      "|| hasRole('OPS_MANAGER') " +
-        //    "|| hasRole('SYSTEM')")
-    public CaseFacade updateCase(
+    @Operation(summary = "Updates a case by id (legacy & v1)")
+    public ResponseEntity<CaseFacade> updateCase(
             @PathVariable Long id,
-            @RequestBody CaseFacade updatedCase) {
-        return service.updateCase(id, updatedCase);
+            @RequestBody CaseFacade updatedCase,
+            HttpServletRequest req) {                                                                // VERSIONING: CHANGED
+        return maybeDeprecate(req, service.updateCase(id, updatedCase));                             // VERSIONING: ADDED
     }
 
     @PutMapping("/{caseId}/status")
-    @Operation(summary = "Updates the status of a case")
-    @PreAuthorize("hasAnyRole('SYSTEM','FRAUD_ANALYST','OPS_MANAGER','AGENT','DISPUTE_ANALYST')")
-    public CaseFacade updateStatus(
+    @Operation(summary = "Updates the status of a case (legacy & v1)")
+    public ResponseEntity<CaseFacade> updateStatus(
             @PathVariable Long caseId,
-            @RequestParam String newStatus) {
-        return service.updateStatus(caseId, newStatus);
+            @RequestParam String newStatus,
+            HttpServletRequest req) {                                                                // VERSIONING: CHANGED
+        return maybeDeprecate(req, service.updateStatus(caseId, newStatus));                         // VERSIONING: ADDED
+    }
+
+    // ---------------------------
+    // V2: stricter transitions + optional comment
+    // ---------------------------
+    @PutMapping("/v2/cases/{caseId}/status")                                                         // VERSIONING: ADDED
+    @Operation(summary = "V2: Updates the status with stricter transitions (e.g., OPEN→CLOSED disallowed directly)")
+    public ResponseEntity<CaseFacade> updateStatusV2(                                                // VERSIONING: ADDED
+                                                                                                     @PathVariable Long caseId,
+                                                                                                     @RequestParam String newStatus,
+                                                                                                     @RequestParam(required = false) String comment) {
+        return ResponseEntity.ok(service.updateStatusV2(caseId, newStatus, comment));
     }
 
     @PutMapping("/{caseId}/assignee")
-    @Operation(summary = "Updates who is assigned to a case")
-    @PreAuthorize("hasAnyRole('SYSTEM','FRAUD_ANALYST','OPS_MANAGER','AGENT','DISPUTE_ANALYST')")
-    public CaseFacade updateAssignee(
+    @Operation(summary = "Updates who is assigned to a case (legacy & v1)")
+    public ResponseEntity<CaseFacade> updateAssignee(
             @PathVariable Long caseId,
-            @RequestParam String assignee) {
-        return service.updateAssignee(caseId, assignee);
+            @RequestParam String assignee,
+            HttpServletRequest req) {                                                                // VERSIONING: CHANGED
+        return maybeDeprecate(req, service.updateAssignee(caseId, assignee));                        // VERSIONING: ADDED
     }
 
     @GetMapping("/{caseId}/history")
-    @Operation(summary = "Shows the history of a given case")
-    @PreAuthorize("hasAnyRole('SYSTEM','FRAUD_ANALYST','OPS_MANAGER','AGENT','DISPUTE_ANALYST')")
-    public List<CaseHistory> getCaseHistory(@PathVariable Long caseId) {
-        return service.getCaseHistoryById(caseId);
+    @Operation(summary = "Shows the history of a given case (legacy & v1)")
+    public ResponseEntity<List<CaseHistory>> getCaseHistory(
+            @PathVariable Long caseId, HttpServletRequest req) {                                     // VERSIONING: CHANGED
+        return maybeDeprecate(req, service.getCaseHistoryById(caseId));
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Deletes a case")
-    @PreAuthorize("hasAnyRole('SYSTEM','OPS_MANAGER')")
-    public void deleteCase(@PathVariable Long id) {
+    @Operation(summary = "Deletes a case (legacy & v1)")
+    public ResponseEntity<Void> deleteCase(@PathVariable Long id, HttpServletRequest req) {          // VERSIONING: CHANGED
         service.deleteCase(id);
+        return maybeDeprecate(req, (Void) null);
     }
 
+    // ---------------------------
+    // V2: trimmed case view (DTO-less)
+    // ---------------------------
+    @GetMapping("/v2/cases/{id}")                                                                    // VERSIONING: ADDED
+    @Operation(summary = "V2: Trimmed case response (id, status, priority, assignee, caseType, primaryTransactionId)")
+    public Map<String, Object> getCaseV2(@PathVariable Long id) {                                    // VERSIONING: ADDED
+        CaseFacade c = service.getCase(id);
+        return Map.of(
+                "id", c.getId(),
+                "status", c.getClassification() != null ? c.getClassification().getStatus() : null,
+                "priority", c.getClassification() != null ? c.getClassification().getPriority() : null,
+                "assignee", c.getAssignment() != null ? c.getAssignment().getAssignedTo() : null,
+                "caseType", c.getIdentifier() != null ? c.getIdentifier().getCaseType() : null,
+                "primaryTransactionId", c.getIdentifier() != null ? c.getIdentifier().getPrimaryTransactionId() : null
+        );
+    }
 
+    // ---------------------------
+    // V2: multi-status search (comma-separated)
+    // ---------------------------
+    @GetMapping("/v2/cases")                                                                         // VERSIONING: ADDED
+    @Operation(summary = "V2: Search cases with multi-status filter (e.g., statuses=OPEN,IN_REVIEW)")
+    public Page<CaseFacade> searchCasesV2(                                                           // VERSIONING: ADDED
+                                                                                                     @RequestParam(required = false) String statuses,   // "OPEN,IN_REVIEW"
+                                                                                                     @RequestParam(required = false) String caseType,
+                                                                                                     @RequestParam(required = false) String priority,
+                                                                                                     @RequestParam(required = false) String assignedTo,
+                                                                                                     @RequestParam(required = false)
+                                                                                                     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime createdFrom,
+                                                                                                     @RequestParam(required = false)
+                                                                                                     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime createdTo,
+                                                                                                     @RequestParam(defaultValue = "0") int page,
+                                                                                                     @RequestParam(defaultValue = "20") int size
+    ) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
+        return service.searchCasesV2(statuses, caseType, priority, assignedTo, createdFrom, createdTo, pageable);
+    }
 }

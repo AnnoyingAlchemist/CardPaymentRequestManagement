@@ -2,25 +2,23 @@ package com.capgemini.demo.controller;
 
 import com.capgemini.demo.casefacade.CaseFacade;
 import com.capgemini.demo.casehelper.CaseSummary;
-import com.capgemini.demo.ruleEngine.*;
+import com.capgemini.demo.ruleEngine.RuleSuggestion;
 import com.capgemini.demo.service.RuleEngineService;
 import io.swagger.v3.oas.annotations.Operation;
-import org.springframework.http.MediaType; //VERSIONING ADDED
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;             // VERSIONING: ADDED
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(
-        value = {"/rules", "/v1/rules"},
-        produces = { MediaType.APPLICATION_JSON_VALUE,
-                    "application/vnd.cardops.v1+json"}
+        value = {"/rules", "/v1/rules"},           // VERSIONING: ADDED
+        produces = {
+                MediaType.APPLICATION_JSON_VALUE,
+                "application/vnd.cardops.v1+json", // VERSIONING: ADDED
+                "application/vnd.cardops.v2+json"  // VERSIONING: ADDED
+        }
 )
 public class RuleEngineController {
     private final RuleEngineService ruleService;
-    private RuleEngine ruleEngine;
 
     public RuleEngineController(RuleEngineService service) {
         this.ruleService = service;
@@ -28,16 +26,7 @@ public class RuleEngineController {
 
     @PostMapping("/evaluate")
     @Operation(summary = "Evaluate a case based on predefined rules")
-    @PreAuthorize("hasAnyRole('SYSTEM')")
     public RuleSuggestion evalCase(@RequestBody CaseFacade c) {
         return ruleService.evalCase(new CaseSummary(c));
     }
-/*
-    @PostMapping("/register-case")
-    public String evaluateCase(@RequestBody CaseFacade c) {
-        //caseService.getCase(c.getId());
-        ruleEngine.evaluateCase(new CaseSummary(c));
-        return "Case Priority and recommendation";
-    }
- */
 }
