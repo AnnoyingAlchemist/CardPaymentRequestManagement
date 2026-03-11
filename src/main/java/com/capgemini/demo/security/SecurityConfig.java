@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -14,10 +13,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity
 public class SecurityConfig {
 
     @Autowired
@@ -27,36 +24,12 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http){
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(
-                        request -> request
-                                .requestMatchers("/swagger-ui/**","/v3/api-docs*/**")
-                                .permitAll()
-                                //cases
-                                /*
-                                .requestMatchers(HttpMethod.GET, "/cases/**")
-                                .hasAnyRole(Role.SYSTEM.name(),Role.AGENT.name(), Role.OPS_MANAGER.name(),Role.FRAUD_ANALYST.name())
-
-                                .requestMatchers(HttpMethod.POST, "/cases")
-                                .hasAnyRole(Role.SYSTEM.name(),Role.AGENT.name(), Role.OPS_MANAGER.name(),Role.FRAUD_ANALYST.name())
-
-                                .requestMatchers(HttpMethod.DELETE, "/cases/**")
-                                .hasAnyRole(Role.SYSTEM.name(),Role.OPS_MANAGER.name())
-
-                                .requestMatchers(HttpMethod.PUT, "/cases/**")
-                                .hasAnyRole(Role.SYSTEM.name(),Role.AGENT.name(), Role.OPS_MANAGER.name(),Role.FRAUD_ANALYST.name())
-
-                                //reporting service
-                                .requestMatchers(HttpMethod.GET, "/report/**")
-                                .hasAnyRole(Role.SYSTEM.name(), Role.OPS_MANAGER.name())
-
-                                //rules service
-                                .requestMatchers(HttpMethod.POST, "/cases/**")
-                                .hasRole(Role.SYSTEM.name())
-
-                                 */
-                                .anyRequest()
-                                .authenticated()
-
+                .authorizeHttpRequests(req -> req
+                        .requestMatchers("/swagger-ui/**","/v3/api-docs*/**").permitAll()
+                        // VERSIONING: ADDED — authorize v1 POST as well
+                        .requestMatchers(HttpMethod.POST, "/cases", "/v1/cases")
+                        .hasAnyRole(Role.AGENT.name(), Role.OPS_MANAGER.name())
+                        .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();

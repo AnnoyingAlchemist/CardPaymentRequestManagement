@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.MediaType; //VERSIONING ADDED
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/cases")
+@RequestMapping(
+        value = {"/cases", "/v1/cases/"}, //VERSIONING ADDED
+        produces = { MediaType.APPLICATION_JSON_VALUE, //VERSIONING ADDED
+                    "application/vnd.cardops.v1+json"} //VERSIONING ADDED
+)
 public class CaseController {
 
     private final CaseService service;

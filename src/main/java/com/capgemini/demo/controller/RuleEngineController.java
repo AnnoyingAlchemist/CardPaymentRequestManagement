@@ -5,6 +5,7 @@ import com.capgemini.demo.casehelper.CaseSummary;
 import com.capgemini.demo.ruleEngine.*;
 import com.capgemini.demo.service.RuleEngineService;
 import io.swagger.v3.oas.annotations.Operation;
+import org.springframework.http.MediaType; //VERSIONING ADDED
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,7 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/rules")
+@RequestMapping(
+        value = {"/rules", "/v1/rules"},
+        produces = { MediaType.APPLICATION_JSON_VALUE,
+                    "application/vnd.cardops.v1+json"}
+)
 public class RuleEngineController {
     private final RuleEngineService ruleService;
     private RuleEngine ruleEngine;

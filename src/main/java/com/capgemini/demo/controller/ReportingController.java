@@ -3,13 +3,18 @@ package com.capgemini.demo.controller;
 import com.capgemini.demo.service.CaseService;
 import com.capgemini.demo.service.ReportingService;
 import io.swagger.v3.oas.annotations.Operation;
+import org.springframework.http.MediaType; //VERSIONING ADDED
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/reports")
+@RequestMapping(
+        value = {"/reports", "/v1/reports"}, //VERSIONING ADDED
+        produces = { MediaType.APPLICATION_JSON_VALUE, //VERSIONING ADDED
+                    "application/vnd.cardops.v1+json"} //VERSIONING ADDED
+)
 public class ReportingController {
     private final ReportingService reportingService;
     private final CaseService caseService;
