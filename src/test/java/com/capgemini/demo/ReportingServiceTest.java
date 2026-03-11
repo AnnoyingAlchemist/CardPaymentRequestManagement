@@ -23,17 +23,35 @@ class ReportingServiceTest {
 
     // --- Helpers to build mocks ---
 
+    // Closed case with a given resolution and (optional) priority
     private CaseFacade mockClosedCase(long id, String resolution) {
-        CaseFacade c = mock(CaseFacade.class, withSettings().lenient());
+        return mockClosedCase(id, resolution, "MEDIUM"); // default priority for tests
+    }
+
+    private CaseFacade mockClosedCase(long id, String resolution, String priority) {
+        CaseFacade c = mock(CaseFacade.class, RETURNS_DEEP_STUBS);
+
         when(c.getId()).thenReturn(id);
         when(c.isOpen()).thenReturn(false);
 
-        var outcome = mock(Object.class, withSettings().lenient());
+        // ReportingService uses status and priority; make them non-null
+        when(c.getStatus()).thenReturn(resolution);
+        when(c.getPriority()).thenReturn(priority);
 
-        c = mock(CaseFacade.class, Mockito.RETURNS_DEEP_STUBS);
-        when(c.getId()).thenReturn(id);
-        when(c.isOpen()).thenReturn(false);
         when(c.getOutcome().getResolution()).thenReturn(resolution);
+
+        return c;
+    }
+
+    // Open case helper
+    private CaseFacade mockOpenCase(long id, String priority) {
+        CaseFacade c = mock(CaseFacade.class, RETURNS_DEEP_STUBS);
+
+        when(c.getId()).thenReturn(id);
+        when(c.isOpen()).thenReturn(true);
+        when(c.getStatus()).thenReturn("IN_REVIEW");
+        when(c.getPriority()).thenReturn(priority);
+        when(c.getOutcome().getResolution()).thenReturn(null);
 
         return c;
     }
@@ -43,7 +61,6 @@ class ReportingServiceTest {
         when(c.getId()).thenReturn(id);
         when(c.isPastDue()).thenReturn(pastDue);
         when(c.getClassification().getDueDate()).thenReturn(dueDate);
-        // isOpen not relevant here
         return c;
     }
 
@@ -66,17 +83,19 @@ class ReportingServiceTest {
 
     @Test
     void getCaseSummaryReport_shouldListClosedCasesWithResolution() {
-        var c1 = mockClosedCase(101L, "RESOLVED_CUSTOMER_FAVOUR");
-        var c2 = mockClosedCase(102L, "RESOLVED_BANK_FAVOUR");
+        var c1 = mockClosedCase(101L, "RESOLVED_CUSTOMER_FAVOUR", "HIGH");
+        var c2 = mockClosedCase(102L, "RESOLVED_BANK_FAVOUR",  "LOW");
 
         String report = reportingService.getCaseSummaryReport(List.of(c1, c2));
 
         assertNotNull(report);
-        assertTrue(report.contains("closed cases:"));
-        assertTrue(report.contains("101"));
-        assertTrue(report.contains("102"));
-        assertTrue(report.contains("RESOLVED_CUSTOMER_FAVOUR"));
-        assertTrue(report.contains("RESOLVED_BANK_FAVOUR"));
+        assertTrue(report.contains("open cases: 0"));
+        assertTrue(report.contains("closed cases: 2"));
+        assertTrue(report.contains("resolved customer favor cases: 1"));
+        assertTrue(report.contains("resolved bank favor cases: 1"));
+        // And optionally check priority counts:
+        assertTrue(report.contains("high priority cases: 1"));
+        assertTrue(report.contains("low priority cases: 1"));
     }
 
     @Test
@@ -100,6 +119,7 @@ class ReportingServiceTest {
         assertTrue(report.contains("504"));
 
     }
+
     @Test
     void getCaseSummaryReport_noClosedCases_returnsEmptyMapString() {
         var open = mockClosedCase(500L, "IGNORED");
@@ -113,14 +133,15 @@ class ReportingServiceTest {
 
     @Test
     void getCaseSummaryReport_mixedOpenAndClosed_onlyClosedAppear() {
-        var closed = mockClosedCase(600L, "RESOLVED");
-        var open = mockClosedCase(601L, "IGNORED");
-        when(open.isOpen()).thenReturn(true);
+        var closed = mockClosedCase(600L, "RESOLVED_CUSTOMER_FAVOUR", "MEDIUM");
+        var open   = mockOpenCase(601L, "LOW");
 
         String report = reportingService.getCaseSummaryReport(List.of(closed, open));
 
-        assertTrue(report.contains("600"));
-        assertFalse(report.contains("601"));
+        assertTrue(report.contains("open cases: 1"));
+        assertTrue(report.contains("closed cases: 1"));
+        assertTrue(report.contains("resolved customer favor cases: 1"));
+        // no IDs expected in summary
     }
 
     // test for no overdue and no nearly due
