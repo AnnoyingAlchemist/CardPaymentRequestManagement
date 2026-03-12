@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.List;                       // VERSIONING: ADDED
 
 @Repository
 public interface CaseRepository extends JpaRepository<CaseFacade, Long> {
@@ -26,11 +27,7 @@ public interface CaseRepository extends JpaRepository<CaseFacade, Long> {
     Object[] findCaseTypeAndTxnIdByCaseId(@Param("id") Long id);
 
     /**
-     * NOTE:
-     * - We DO NOT send NULLs anymore. Service maps missing filters to:
-     *   status/caseType/Priority/assignedTo -> empty string ""
-     *   createdFrom/createdTo -> min/max dates
-     * - JPQL checks empty-string sentinels instead of :param IS NULL.
+     * v1 (legacy & v1) search using empty-string sentinels and BETWEEN.
      */
     @Query("""
         SELECT c FROM CaseFacade c
@@ -42,6 +39,26 @@ public interface CaseRepository extends JpaRepository<CaseFacade, Long> {
         """)
     Page<CaseFacade> searchCases(
             @Param("status") String status,
+            @Param("caseType") String caseType,
+            @Param("priority") String priority,
+            @Param("assignedTo") String assignedTo,
+            @Param("createdFrom") LocalDateTime createdFrom,
+            @Param("createdTo") LocalDateTime createdTo,
+            Pageable pageable
+    );
+
+    // VERSIONING: ADDED — v2 multi-status search with IN and sentinel boolean
+    @Query("""
+        SELECT c FROM CaseFacade c
+        WHERE (:statusesEmpty = true OR c.classification.status IN :statuses)
+          AND (:caseType = '' OR c.identifier.caseType = :caseType)
+          AND (:priority = '' OR c.classification.priority = :priority)
+          AND (:assignedTo = '' OR c.assignment.assignedTo = :assignedTo)
+          AND c.assignment.createdAt BETWEEN :createdFrom AND :createdTo
+        """)
+    Page<CaseFacade> searchCasesV2(
+            @Param("statuses") List<String> statuses,
+            @Param("statusesEmpty") boolean statusesEmpty,
             @Param("caseType") String caseType,
             @Param("priority") String priority,
             @Param("assignedTo") String assignedTo,
