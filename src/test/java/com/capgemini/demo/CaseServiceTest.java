@@ -149,6 +149,7 @@ class CaseServiceTest {
         assertThat(h.getComment()).isEqualTo("created");
     }
 
+    // Start of v1 tests
     // testcase for state machine, duplicates, no-op
     @Test
     void updateStatus_blankOrIllegal_400() {
@@ -231,6 +232,124 @@ class CaseServiceTest {
         assertThat(ex.getReason()).contains("Only OPEN is allowed as the first state");
         verify(repository, never()).save(any());
         verify(historyRepository, never()).save(any());
+    }
+
+    //start of v2 test cases
+    // --- v2 tests ---
+    @Test
+    void updateStatusV2_blankOrIllegal_400() {
+        ResponseStatusException ex1 = assertThrows(ResponseStatusException.class,
+                () -> service.updateStatusV2(1L, "   ", null));
+        assertThat(ex1.getStatusCode().value()).isEqualTo(400);
+        assertThat(ex1.getReason()).contains("must not be blank");
+
+        // illegal
+        ResponseStatusException ex2 = assertThrows(ResponseStatusException.class,
+                () -> service.updateStatusV2(2L, "NOT_A_STATE", null));
+        assertThat(ex2.getStatusCode().value()).isEqualTo(400);
+        assertThat(ex2.getReason()).contains("Illegal status");
+    }
+
+    @Test
+    void updateStatusV2_notFound_404() {
+        when(repository.findById(42L)).thenReturn(Optional.empty());
+
+        ResponseStatusException ex = assertThrows(ResponseStatusException.class,
+                () -> service.updateStatusV2(42L, "OPEN", null));
+        assertThat(ex.getStatusCode().value()).isEqualTo(404);
+        assertThat(ex.getReason()).contains("not found");
+        verify(historyRepository, never()).save(any());
+        verify(repository, never()).save(any());
+    }
+
+    @Test
+    void updateStatusV2_initialOnlyOpenAllowed_409() {
+        CaseFacade c = savedCase(7L, null, "FRAUD", "TX-7", "C", "agentA");
+        c.setClassification(new CaseClassification()); // simulate no status
+        when(repository.findById(7L)).thenReturn(Optional.of(c));
+
+        ResponseStatusException ex = assertThrows(ResponseStatusException.class,
+                () -> service.updateStatusV2(7L, "CLOSED", null));
+        assertThat(ex.getStatusCode().value()).isEqualTo(409);
+        assertThat(ex.getReason()).contains("Only OPEN is allowed as the first state");
+        verify(historyRepository, never()).save(any());
+        verify(repository, never()).save(any());
+    }
+
+    @Test
+    void updateStatusV2_noop_sameState_noSaveNoHistory() {
+        CaseFacade c = savedCase(400L, "IN_REVIEW", "FRAUD", "TX-400", "C", "agentA");
+        when(repository.findById(400L)).thenReturn(Optional.of(c));
+
+        CaseFacade out = service.updateStatusV2(400L, " in_review ", "ignored");
+        assertThat(out).isSameAs(c);
+        verify(historyRepository, never()).save(any());
+        verify(repository, never()).save(any());
+    }
+
+    @Test
+    void updateStatusV2_invalidTransition_409() {
+        CaseFacade c = savedCase(100L, "PENDING_CUSTOMER", "FRAUD", "TX-Z", "C", "agentA");
+        when(repository.findById(100L)).thenReturn(Optional.of(c));
+
+        ResponseStatusException ex = assertThrows(ResponseStatusException.class,
+                () -> service.updateStatusV2(100L, "RESOLVED_BANK_FAVOUR", null));
+        assertThat(ex.getStatusCode().value()).isEqualTo(409);
+        assertThat(ex.getReason()).contains("Invalid transition (v2)");
+        verify(historyRepository, never()).save(any());
+        verify(repository, never()).save(any());
+    }
+
+    @Test
+    void updateStatusV2_duplicateCombination_409() {
+        CaseFacade c = savedCase(200L, "IN_REVIEW", "FRAUD", "TX-200", "C", "agentA");
+        when(repository.findById(200L)).thenReturn(Optional.of(c));
+        when(repository.existsByIdentifier_CaseTypeAndIdentifier_PrimaryTransactionIdAndClassification_Status(
+                "FRAUD", "TX-200", "PENDING_CUSTOMER")).thenReturn(true);
+
+        ResponseStatusException ex = assertThrows(ResponseStatusException.class,
+                () -> service.updateStatusV2(200L, "PENDING_CUSTOMER", "moving to pending"));
+        assertThat(ex.getStatusCode().value()).isEqualTo(409);
+        assertThat(ex.getReason()).contains("A case already exists");
+
+        verify(historyRepository, never()).save(any());
+        verify(repository, never()).save(any());
+    }
+
+    @Test
+    void updateStatusV2_validTransition_writesHistoryAndSaves_withCustomComment() {
+        CaseFacade c = savedCase(300L, "IN_REVIEW", "FRAUD", "TX-300", "C", "agentA");
+        when(repository.findById(300L)).thenReturn(Optional.of(c));
+        when(repository.existsByIdentifier_CaseTypeAndIdentifier_PrimaryTransactionIdAndClassification_Status(
+                "FRAUD", "TX-300", "PENDING_CUSTOMER")).thenReturn(false);
+        when(repository.save(any(CaseFacade.class))).thenAnswer(inv -> inv.getArgument(0));
+
+        CaseFacade out = service.updateStatusV2(300L, " pending_customer ", "escalated to customer");
+
+        assertThat(out.getClassification().getStatus()).isEqualTo("PENDING_CUSTOMER");
+        verify(historyRepository).save(historyCaptor.capture());
+        CaseHistory h = historyCaptor.getValue();
+        assertThat(h.getOldStatus()).isEqualTo("IN_REVIEW");
+        assertThat(h.getNewStatus()).isEqualTo("PENDING_CUSTOMER");
+        assertThat(h.getComment()).isEqualTo("escalated to customer");
+        verify(repository).save(any(CaseFacade.class));
+    }
+
+    @Test
+    void updateStatusV2_validTransition_writesHistoryAndSaves_withDefaultComment() {
+        CaseFacade c = savedCase(301L, "IN_REVIEW", "FRAUD", "TX-301", "C", "agentA");
+        when(repository.findById(301L)).thenReturn(Optional.of(c));
+        when(repository.existsByIdentifier_CaseTypeAndIdentifier_PrimaryTransactionIdAndClassification_Status(
+                "FRAUD", "TX-301", "PENDING_CUSTOMER")).thenReturn(false);
+        when(repository.save(any(CaseFacade.class))).thenAnswer(inv -> inv.getArgument(0));
+
+        CaseFacade out = service.updateStatusV2(301L, "PENDING_CUSTOMER", null);
+
+        assertThat(out.getClassification().getStatus()).isEqualTo("PENDING_CUSTOMER");
+        verify(historyRepository).save(historyCaptor.capture());
+        CaseHistory h = historyCaptor.getValue();
+        assertThat(h.getComment()).isEqualTo("status change (v2)");
+        verify(repository).save(any(CaseFacade.class));
     }
 
     // testcase fore normalization and date bounds (including swap)
