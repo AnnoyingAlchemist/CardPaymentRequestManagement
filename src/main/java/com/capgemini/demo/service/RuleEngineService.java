@@ -18,7 +18,12 @@ public class RuleEngineService {
     public RuleSuggestion evalCase(CaseSummary c){
         //caseService.getCase(c.getId());
         RuleEngine ruleEngine = new RuleEngine(new UnknownRule());
-        switch(c.getCaseType()){
+
+        // Normalize caseType (null/blank-safe)
+        String caseType = (c != null ? c.getCaseType() : null);
+        caseType = (caseType == null ? "" : caseType.trim().toUpperCase());
+
+        switch(caseType){
             case "FRAUD_INVESTIGATION":
                 ruleEngine.setRuleset(new Fraud());
                 break;
