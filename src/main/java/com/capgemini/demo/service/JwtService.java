@@ -1,8 +1,6 @@
 package com.capgemini.demo.service;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +19,7 @@ public class JwtService {
 
     public Claims verifySignatureAndExtractClaims(String token){
         return Jwts.parser()
+                .setAllowedClockSkewSeconds(5) // tolerate 5s drift
                 .setSigningKey(getSignedKey())
                 .build()
                 .parseClaimsJws(token)
@@ -37,7 +36,16 @@ public class JwtService {
         return verifySignatureAndExtractClaims(token).getExpiration();
     }
 
+
     public boolean isTokenExpired(String token){
-        return getExpiration(token).before(new Date());
+        try {
+            Date exp = getExpiration(token);   // this will throw if expired
+            return exp.before(new Date());     // normal case (not thrown)
+        } catch (ExpiredJwtException e) {
+            return true;                       // token is already expired
+        } catch (JwtException e) {
+            return true;                       // invalid/tampered token => treat as expired
+        }
     }
+
 }
