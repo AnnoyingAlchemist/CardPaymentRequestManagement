@@ -1,9 +1,0 @@
-<changelist name="Uncommitted_changes_before_Update_at_3_1_2026_9_10_PM_[Changes]" date="1772421071499" recycled="true" deleted="true">
-  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_3_1_2026_9_10_PM_[Changes]/shelved.patch" />
-  <option name="DESCRIPTION" value="Uncommitted changes before Update at 3/1/2026 9:10 PM [Changes]" />
-  <binary>
-    <option name="BEFORE_PATH" value="target/classes/com/capgemini/demo/repository/CaseRepository.class" />
-    <option name="AFTER_PATH" value="target/classes/com/capgemini/demo/repository/CaseRepository.class" />
-    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_3_1_2026_9_10_PM_[Changes]/CaseRepository.class" />
-  </binary>
-</changelist>

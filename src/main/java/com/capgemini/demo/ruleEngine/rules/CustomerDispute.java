@@ -13,13 +13,31 @@ public class CustomerDispute implements RuleSet {
     public RuleSuggestion evaluate(CaseSummary c) {
         RuleSuggestion suggestion = new RuleSuggestion();
         int lowValueThreshold = 100;
+        int mediumValueThreshold = 1000;
+        int highValueThreshold = 10000;
+        int criticalValueThreshold = 100000;
 
-        //TODO: implement more cases
+        if(c.getTransactionAmount().compareTo(BigDecimal.valueOf(criticalValueThreshold)) > 0){
+            suggestion.setPriority(Priority.CRITICAL);
+            suggestion.setRecommendedNextAction(Action.AUTO_CREDIT.name());
+            return suggestion;
+        }
+        if(c.getTransactionAmount().compareTo(BigDecimal.valueOf(highValueThreshold)) > 0){
+            suggestion.setPriority(Priority.HIGH);
+            suggestion.setRecommendedNextAction(Action.AUTO_CREDIT.name());
+            return suggestion;
+        }
+        if(c.getTransactionAmount().compareTo(BigDecimal.valueOf(mediumValueThreshold)) > 0){
+            suggestion.setPriority(Priority.MEDIUM);
+            suggestion.setRecommendedNextAction(Action.AUTO_CREDIT.name());
+            return suggestion;
+        }
         if(c.getTransactionAmount().compareTo(BigDecimal.valueOf(lowValueThreshold)) < 0){
             suggestion.setPriority(Priority.LOW);
             suggestion.setRecommendedNextAction(Action.AUTO_CREDIT.name());
             return suggestion;
         }
+
 
 
         suggestion.setRecommendedNextAction("None");

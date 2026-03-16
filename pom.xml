@@ -23,6 +23,26 @@
     </properties>
 
     <dependencies>
+        <!-- Source: https://mvnrepository.com/artifact/io.cucumber/cucumber-java -->
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-java</artifactId>
+            <version>7.34.3</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-spring</artifactId>
+            <version>7.18.0</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- Source: https://mvnrepository.com/artifact/io.cucumber/cucumber-junit -->
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-junit</artifactId>
+            <version>7.34.3</version>
+            <scope>test</scope>
+        </dependency>
         <!-- Source: https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-test -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

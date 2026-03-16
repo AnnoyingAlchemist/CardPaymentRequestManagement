@@ -20,6 +20,7 @@ public class CardStatus implements RuleSet {
             return suggestion;
         }
 
+
         suggestion.setRecommendedNextAction("None");
         suggestion.setPriority(Priority.UNKNOWN);
 

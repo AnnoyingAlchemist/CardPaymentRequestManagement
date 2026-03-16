@@ -44,7 +44,6 @@ public class RuleEngineService {
         }
         RuleSuggestion suggestion;
         suggestion = ruleEngine.evaluateCase(c);
-        //TODO: Modify case to update suggestion
 
         return suggestion;
     }
