@@ -1,9 +1,24 @@
+package com.capgemini.demo;
+
+import com.capgemini.demo.repository.CaseRepository;
+import com.capgemini.demo.service.CaseService;
 import io.cucumber.java.PendingException;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 
 public class ReadCaseSteps {
+    @Mock
+    private CaseRepository caseRepository;
+
+    @InjectMocks
+    private CaseService caseService;
+
+
+
+
     @Given("There exist cases in the database")
     public void thereExistCasesInTheDatabase() {
         // Write code here that turns the phrase above into concrete actions

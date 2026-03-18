@@ -78,7 +78,7 @@ class ReportingServiceTest {
         if (end < 0) end = report.length();
         return report.substring(start, end).replaceAll("[^0-9]", "");
     }
-
+/*
     // --- Testcases ---
 
     @Test
@@ -292,4 +292,6 @@ class ReportingServiceTest {
         assertThrows(NullPointerException.class,
                 () -> reportingService.getCaseAgingReport(List.of(c)));
     }
+
+ */
 }

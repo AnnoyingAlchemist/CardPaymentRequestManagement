@@ -4,45 +4,28 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4df6bd1a-47e5-456f-a810-2b3b0fe1f0b9" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/SecurityExceptionAdvisor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/CreateCaseFeatureRunner.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/CreateCaseSteps.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/DeleteCaseSteps.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/ReadCaseSteps.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/ReportServiceSteps.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/UpdateCaseSteps.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/resources/features/createCase.feature" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/resources/features/deleteCase.feature" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/resources/features/evaluateCase.feature" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/resources/features/readCase.feature" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/resources/features/reportingService.feature" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/resources/features/updateCase.feature" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2_25_2026_3_41_PM_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2_26_2026_1_30_PM_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_3_1_2026_9_10_PM_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_3_1_2026_9_10_PM__Changes_.xml" beforeDir="false" />
+    <list default="true" id="4df6bd1a-47e5-456f-a810-2b3b0fe1f0b9" name="Changes" comment="Feature descriptions added">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/casehelper/CaseReport.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/capgemini/demo/CreateCaseSteps.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/ruleEngine/rules/CardStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/ruleEngine/rules/CardStatus.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/ruleEngine/rules/Chargeback.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/ruleEngine/rules/Chargeback.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/ruleEngine/rules/CustomerDispute.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/ruleEngine/rules/CustomerDispute.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/ruleEngine/rules/Fraud.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/ruleEngine/rules/Fraud.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/service/RuleEngineService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/service/RuleEngineService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/capgemini/demo/SwaggerConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/capgemini/demo/SwaggerConfig.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/capgemini/demo/casefacade/CaseFacade.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/capgemini/demo/casefacade/CaseFacade.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/capgemini/demo/controller/CaseController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/capgemini/demo/controller/CaseController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/casefacade/CaseTransaction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/casefacade/CaseTransaction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/controller/ReportingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/controller/ReportingController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/service/ReportingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/capgemini/demo/service/ReportingService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/CreateCaseSteps.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/DeleteCaseSteps.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/capgemini/demo/DeleteCaseSteps.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ReadCaseSteps.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/capgemini/demo/ReadCaseSteps.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ReportServiceSteps.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/capgemini/demo/ReportServiceSteps.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/UpdateCaseSteps.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/capgemini/demo/UpdateCaseSteps.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/capgemini/demo/ReportingServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/capgemini/demo/ReportingServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/resources/features/deleteCase.feature" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/features/deleteCase.feature" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/capgemini/demo/casefacade/CaseTransaction.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/capgemini/demo/casefacade/CaseTransaction.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/capgemini/demo/controller/ReportingController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/capgemini/demo/controller/ReportingController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/capgemini/demo/controller/RuleEngineController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/capgemini/demo/controller/RuleEngineController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/capgemini/demo/repository/CaseRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/capgemini/demo/repository/CaseRepository.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/capgemini/demo/ruleEngine/rules/CardStatus.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/capgemini/demo/ruleEngine/rules/CardStatus.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/capgemini/demo/ruleEngine/rules/Chargeback.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/capgemini/demo/ruleEngine/rules/Chargeback.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/capgemini/demo/ruleEngine/rules/CustomerDispute.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/capgemini/demo/ruleEngine/rules/CustomerDispute.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/capgemini/demo/ruleEngine/rules/Fraud.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/capgemini/demo/ruleEngine/rules/Fraud.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/capgemini/demo/security/SecurityConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/capgemini/demo/security/SecurityConfig.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/capgemini/demo/service/CaseService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/capgemini/demo/service/CaseService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/capgemini/demo/service/JwtService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/capgemini/demo/service/JwtService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/capgemini/demo/service/RuleEngineService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/capgemini/demo/service/RuleEngineService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/capgemini/demo/service/ReportingService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/capgemini/demo/service/ReportingService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/com/capgemini/demo/ReportingServiceTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/com/capgemini/demo/ReportingServiceTest.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -124,29 +107,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.CardRequestPaymentManagementApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Build demo.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Load Gradle Dependencies.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.demo [:com.capgemini.demo.CardRequestPaymentManagementApplication.main()].executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CaseServiceTest.executor&quot;: &quot;Coverage&quot;,
-    &quot;JUnit.ReportingServiceTest.executor&quot;: &quot;Coverage&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/bpayero/OneDrive - Capgemini/Documents/GitHub/CardPaymentRequestManagement/src/test/resources/features&quot;,
-    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/bpayero/OneDrive - Capgemini/Documents/GitHub/CardPaymentRequestManagement/src/main/java/org/example/Main.java&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.CardRequestPaymentManagementApplication.executor": "Debug",
+    "Gradle.Build demo.executor": "Run",
+    "Gradle.Load Gradle Dependencies.executor": "Run",
+    "Gradle.demo [:com.capgemini.demo.CardRequestPaymentManagementApplication.main()].executor": "Run",
+    "JUnit.CaseServiceTest.executor": "Coverage",
+    "JUnit.CreateCaseFeatureRunner.executor": "Run",
+    "JUnit.ReportingServiceTest.executor": "Coverage",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/bpayero/OneDrive - Capgemini/Documents/GitHub/CardPaymentRequestManagement/src/test/resources/features",
+    "onboarding.tips.debug.path": "C:/Users/bpayero/OneDrive - Capgemini/Documents/GitHub/CardPaymentRequestManagement/src/main/java/org/example/Main.java",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "preferences.pluginManager"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\bpayero\OneDrive - Capgemini\Documents\GitHub\CardPaymentRequestManagement\src\test\resources\features" />
@@ -158,15 +142,15 @@
       <recent name="C:\Users\bpayero\OneDrive - Capgemini\Documents\GitHub\CardPaymentRequestManagement\src" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
-      <recent name="" />
       <recent name="com.capgemini.demo" />
+      <recent name="" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="" />
       <recent name="com.capgemini.demo.service" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.CardRequestPaymentManagementApplication">
+  <component name="RunManager" selected="JUnit.CreateCaseFeatureRunner">
     <configuration name="CardRequestPaymentManagementApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.capgemini.demo.CardRequestPaymentManagementApplication" />
       <module name="CardPaymentRequestManagement (1)" />
@@ -176,6 +160,15 @@
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CreateCaseFeatureRunner" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="CardPaymentRequestManagement (1)" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="CreateCaseFeatureRunner" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -209,6 +202,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.CreateCaseFeatureRunner" />
         <item itemvalue="Application.CardRequestPaymentManagementApplication" />
         <item itemvalue="JUnit.ReportingServiceTest" />
       </list>
@@ -358,7 +352,15 @@
       <option name="project" value="LOCAL" />
       <updated>1773349831178</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="Feature descriptions added">
+      <option name="closed" value="true" />
+      <created>1773693474727</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1773693474727</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -391,12 +393,14 @@
     <MESSAGE value="when creating a case, createdBy is now automatically updated with username from JWT" />
     <MESSAGE value="Reporting service summary updated, Security changed to use @PreAuthorize" />
     <MESSAGE value="Some Rules updated" />
-    <option name="LAST_COMMIT_MESSAGE" value="Some Rules updated" />
+    <MESSAGE value="Feature descriptions added" />
+    <option name="LAST_COMMIT_MESSAGE" value="Feature descriptions added" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/CardPaymentRequestManagement$CardRequestPaymentManagementApplication.ic" NAME="CardRequestPaymentManagementApplication Coverage Results" MODIFIED="1771623532968" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
       <FILTER>com.capgemini.demo.*</FILTER>
     </SUITE>
+    <SUITE FILE_PATH="coverage/CardPaymentRequestManagement$CreateCaseFeatureRunner.ic" NAME="CreateCaseFeatureRunner Coverage Results" MODIFIED="1773820648722" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />
     <SUITE FILE_PATH="coverage/CardPaymentRequestManagement$CaseServiceTest.ic" NAME="CaseServiceTest Coverage Results" MODIFIED="1773343043414" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
       <FILTER>com.capgemini.demo.*</FILTER>
     </SUITE>

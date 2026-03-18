@@ -1,3 +1,5 @@
+package com.capgemini.demo;
+
 import io.cucumber.java.PendingException;
 import io.cucumber.java.en.*;
 

@@ -6,6 +6,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.MediaType;             // VERSIONING: ADDED
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Map;
+
 @RestController
 @RequestMapping(
         value = {"/reports", "/v1/reports"},       // VERSIONING: ADDED
@@ -26,19 +29,20 @@ public class ReportingController {
 
     @GetMapping("/summary")
     @Operation(summary = "Gives a summary of cases by type/status/resolution.")
-    public String getSummaryReport(){
+    //@RequestParam(required = false)
+    public List<Map<String, Map<String,Integer>>> getSummaryReport(){
         return reportingService.getCaseSummaryReport(caseService.getAllCases());
     }
 
     @GetMapping("/backlog")
     @Operation(summary = "Backlog & SLA risk.")
-    public String getBacklogReport(){
+    public List<Map<String,Integer>> getBacklogReport(){
         return reportingService.getCaseBacklogReport(caseService.getAllCases());
     }
 
     @GetMapping("/aging")
     @Operation(summary = "Shows aging of open cases.")
-    public String getAgingReport(){
+    public Map<String, Integer> getAgingReport(){
         return reportingService.getCaseAgingReport(caseService.getAllCases());
     }
 }

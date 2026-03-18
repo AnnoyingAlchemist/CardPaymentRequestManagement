@@ -23,7 +23,9 @@ public class CaseTransaction {
     private String merchantCategoryCode;
     private String scheme;
     private String transactionCountry;
+
     private String currency;
+
     private String transactionId;
 
 }
