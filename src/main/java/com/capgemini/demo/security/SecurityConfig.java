@@ -30,7 +30,7 @@ public class SecurityConfig {
 
                                 // VERSIONING: ADDED — authorize POST for legacy + v1 + v2
                                 .requestMatchers(HttpMethod.POST, "/cases", "/v1/cases", "/v2/cases")
-                                .hasAnyRole(Role.AGENT.name(), Role.OPS_MANAGER.name())
+                                .hasAnyRole(Role.AGENT.name(), Role.OPS_MANAGER.name(), Role.SYSTEM.name())
 
                                 .anyRequest().authenticated()
                 )
