@@ -47,7 +47,7 @@ public interface CaseRepository extends JpaRepository<CaseFacade, Long> {
             Pageable pageable
     );
 
-    // VERSIONING: ADDED — v2 multi-status search with IN and sentinel boolean
+    // VERSIONING
     @Query("""
         SELECT c FROM CaseFacade c
         WHERE (:statusesEmpty = true OR c.classification.status IN :statuses)

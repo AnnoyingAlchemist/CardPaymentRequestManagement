@@ -77,20 +77,7 @@ public class CaseFacade {
             @AttributeOverride(name = "resolutionNotes", column = @Column(name = "resolution_notes"))
     })
     private CaseOutcome outcome;
-/*
-    @Builder
-    public CaseFacade(Long id, Boolean ruleEvalFailed, CaseClassification classification,
-                      CaseAssignment assignment, CaseIdentifier identifier,
-                      CaseTransaction transaction, CaseOutcome outcome) {
-        this.id = id;
-        this.ruleEvalFailed = ruleEvalFailed;
-        this.classification = classification;
-        this.assignment = assignment;
-        this.identifier = identifier;
-        this.transaction = transaction;
-        this.outcome = outcome;
-    }
-*/
+
     @JsonIgnore
     public boolean isOpen(){
        return (this.classification.getStatus().equals("OPEN"));
