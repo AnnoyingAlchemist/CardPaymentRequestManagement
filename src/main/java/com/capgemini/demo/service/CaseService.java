@@ -57,7 +57,7 @@ public class CaseService {
     }
 
     // ---------------------------
-    // VERSIONING: ADDED — stricter transitions for v2
+    // VERSIONING - stricter transitions for v2
     // ---------------------------
     private static final Map<String, Set<String>> ALLOWED_TRANSITIONS_V2;
     static {
@@ -172,7 +172,7 @@ public class CaseService {
         );
     }
 
-    // VERSIONING: ADDED — v2 multi-status search
+    // VERSIONING — v2 multi-status search
     @Transactional(readOnly = true)
     public Page<CaseFacade> searchCasesV2(
             String statusesCsv,
@@ -328,7 +328,7 @@ public class CaseService {
         return repository.save(existing);
     }
 
-    // VERSIONING: ADDED — v2 status update with stricter transitions and optional comment
+    // VERSIONING — v2 status update with stricter transitions and optional comment
     public CaseFacade updateStatusV2(Long caseId, String requestedStatus, String comment) {
         if (requestedStatus == null || requestedStatus.isBlank()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Status must not be blank");
