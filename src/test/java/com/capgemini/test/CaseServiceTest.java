@@ -1,4 +1,4 @@
-package com.capgemini.demo;
+package com.capgemini.test;
 
 import com.capgemini.demo.casefacade.*;
 import com.capgemini.demo.casehelper.CaseHistory;
@@ -397,13 +397,13 @@ class CaseServiceTest {
         assertThat(d2.getValue()).isEqualTo(from);
     }
 
-    // testcase for deletes case and its history
+    // testcase for deletes a case and its history
     @Test
     void deleteCase_deletesCaseAndHistory() {
         when(repository.findById(20L)).thenReturn(Optional.of(savedCase(20L, "OPEN", "FRAUD", "TX", "C", "x")));
         service.deleteCase(20L);
         verify(repository).deleteById(20L);
-        verify(historyRepository).deleteByCaseId(20L);
+        verify(historyRepository).deleteByCaseId(repository.findById(20L).orElseThrow());
     }
 
     // testcase for 404 (and simple found check)

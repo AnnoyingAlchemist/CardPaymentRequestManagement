@@ -17,7 +17,6 @@ public class CaseTransaction {
     private BigDecimal transactionAmount;
     private String transactionCurrency;
 
-    // ✅ Refactored from String → LocalDateTime
     private LocalDateTime transactionDateTime;
 
     private String merchantCategoryCode;

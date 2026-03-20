@@ -5,116 +5,120 @@ import com.capgemini.demo.repository.CaseHistoryRepository;
 import com.capgemini.demo.repository.CaseRepository;
 import com.capgemini.demo.ruleEngine.Priority;
 import com.capgemini.demo.service.CaseService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.cucumber.java.Before;
-import io.cucumber.java.PendingException;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import io.cucumber.spring.CucumberContextConfiguration;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.web.ErrorResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThrows;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
-//@ExtendWith(MockitoExtension.class)
+@WithMockUser(username = "admin", roles = {"SYSTEM"})
 public class DeleteCaseSteps {
 
-    @Mock
+    @Autowired
+    private MockMvc mockMvc;
+
+    @Autowired
     private CaseRepository caseRepository;
 
-    @Mock
+    @Autowired
     private CaseHistoryRepository caseHistoryRepository;
 
-    @InjectMocks
+    @Autowired
     private CaseService caseService;
 
-    private CaseFacade validCase1;
-    private CaseFacade validCase2;
-
+    private int responseStatus;
+    private final ObjectMapper objectMapper = new ObjectMapper();
+    private String requestBody;
+    private CaseFacade testCase1;
+    private CaseFacade testCase2;
+    private CaseFacade resultCase;
     private Exception caughtException;
+
 
     @Before
     public void setUp() {
-        MockitoAnnotations.openMocks(this);
-        caseService = new CaseService(caseRepository, caseHistoryRepository);
-
-        CaseFacade validCase1 = buildValidCase(29, CaseTypeCode.CARD_STATUS, "2345", "customer1");
-        CaseFacade validCase2 = buildValidCase(30, CaseTypeCode.CHARGEBACK, "2457", "customer2");
-
-        //caseService.createCase(validCase1);
-        //caseService.createCase(validCase2);
-
-        when(caseRepository.findById(29L)).thenReturn(java.util.Optional.of(validCase1));
-        when(caseRepository.findById(30L)).thenReturn(java.util.Optional.of(validCase2));
+        objectMapper.registerModule(new JavaTimeModule());
     }
 
-    @Given("A case with {long} exists in the database to be deleted")
-    public void aCaseWithExistsInTheDatabaseToBeDeleted(Long caseId) {
-        caseRepository.findById(caseId);
-        //caseRepository.save(validCase1);
-        //caseRepository.save(validCase2);
-        //when(caseService.getCase(caseId)).thenReturn(validCase1);
-        //Assertions.assertNotNull(caseService.getCase(caseId));
+    @Given("A case with target id exists in the database to be deleted")
+    public void aCaseWithExistsInTheDatabaseToBeDeleted() {
+        testCase1 = buildValidCase(CaseTypeCode.CARD_STATUS,
+                "gw43","customer1");
+        caseRepository.save(testCase1);
+
+        testCase2 = buildValidCase(CaseTypeCode.CARD_STATUS,
+                "w3h","customer1");
+        caseRepository.save(testCase2);
     }
 
-    @When("I make a DELETE request with the case id to the cases {long} endpoint")
-    public void iMakeADELETERequestWithTheCaseIdToTheCasesEndpoint(Long caseId) {
+    @When("I make a DELETE request with the case id to the cases target id endpoint")
+    public void iMakeADELETERequestWithTheCaseIdToTheCasesEndpoint() {
         caughtException = null;
         try {
-            caseService.deleteCase(caseId);
-        } catch (Exception e) {
-            caughtException = e;
-        }
-        assertThat(caughtException).isNull();
-    }
-    @Then("the application should delete the case in the database")
-    public void theApplicationShouldDeleteTheCaseInTheDatabase() {
-        caughtException = null;
+            mockMvc.perform(delete("/v1/cases/{id}",testCase1.getId()))
+                    .andExpect(status().isOk()).andReturn();
 
-        try {
-            caseRepository.findById(29L);
+            mockMvc.perform(delete("/v1/cases/{id}",testCase2.getId()))
+                    .andExpect(status().isOk()).andReturn();
+
         }
         catch (Exception e) {
             caughtException = e;
         }
-        assertThat(caughtException).isNotNull();
+    }
+    @Then("the application should delete the case with target id in the database")
+    public void theApplicationShouldDeleteTheCaseInTheDatabase() {
+        assertThat(caughtException).isNull();
+        assertThat(caseRepository.existsById(testCase1.getId())).isFalse();
+        assertThat(caseRepository.existsById(testCase2.getId())).isFalse();
     }
 
     @Given("A case with the {long} does not exist")
     public void aCaseWithTheDoesNotExist(Long arg0) {
-        when(caseRepository.findById(arg0)).thenThrow(ResponseStatusException.class);
+        try {
+            caseService.getCase(arg0);
+        }
+        catch (Exception e) {
+            caughtException = e;
+        }
+        assertThat(caughtException.getMessage()).contains("Case with ID " + arg0 + " not found");
     }
 
     @When("I make a DELETE request with the updated case to the cases {long} endpoint")
     public void iMakeADELETERequestWithTheUpdatedCaseToTheCasesEndpoint(Long arg0) {
-        caseRepository.deleteById(arg0);
+        caughtException = null;
+        try {
+            MvcResult mvcResult = mockMvc.perform(delete("/v1/cases/{id}",arg0))
+                    .andExpect(status().is4xxClientError()).andReturn();
+
+            responseStatus = mvcResult.getResponse().getStatus();
+        }
+        catch (Exception e) {
+            caughtException = e;
+        }
     }
     @Then("the application should fail to delete and return status code {int}")
     public void theApplicationShouldFailToDeleteAndReturnStatusCode(int arg0) {
-        //caseService.deleteCase((long) 324);
-        assertThrows(ResponseStatusException.class, () -> caseService.deleteCase((long) 324));
+        assertThat(responseStatus).isEqualTo(arg0);
     }
 
 
-    private CaseFacade buildValidCase(long caseId, CaseTypeCode caseType, String txnId, String customerId) {
+    private CaseFacade buildValidCase(CaseTypeCode caseType, String txnId, String customerId) {
         CaseFacade c = new CaseFacade();
-
-        c.setId(caseId);
 
         CaseClassification classification = new CaseClassification();
         classification.setStatus(CaseStatusCode.OPEN.name());

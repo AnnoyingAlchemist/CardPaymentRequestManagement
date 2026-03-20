@@ -18,5 +18,5 @@ public interface CaseHistoryRepository extends JpaRepository<CaseHistory,Long> {
     @NullMarked
     ArrayList<CaseHistory> findAll();
 
-    void deleteByCaseId(Long id);
+    void deleteByCaseId(CaseFacade caseId);
 }

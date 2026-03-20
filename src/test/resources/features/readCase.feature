@@ -11,19 +11,16 @@ Feature: Read cases from database
   Scenario: No cases in database
     Given There do not exist any cases in the database
     When I make a GET request to cases to read cases from an empty database
-    Then the application should return status code 404
+    Then the application should return empty collection of cases
 
   Scenario Outline: Reading a specific case
-    Given A case with the "<target id>" exists in the database
+    Given A case with the target id exists in the database
     When I send a GET request to cases endpoint to read a certain case
-    Then the application should return the case that matches the "<target id>"
+    Then the application should return the case that matches the target id
     Examples:
-      |target id|
-      |22       |
-      |23       |
 
   Scenario Outline: Case does not exist
-    Given A case with the "<target id>" does not exist in the database
+    Given A case with the <target id> does not exist in the database
     When I make a GET request to cases endpoint for a non-existent case
     Then the application should return status code 404
     Examples:

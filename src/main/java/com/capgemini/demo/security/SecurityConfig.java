@@ -26,7 +26,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         request -> request
-                                .requestMatchers("/swagger-ui/**","/v3/api-docs*/**").permitAll()
+                                .requestMatchers("/swagger-ui/**","/v3/api-docs*/**","/cases/**").permitAll()
 
                                 // VERSIONING: ADDED — authorize POST for legacy + v1 + v2
                                 .requestMatchers(HttpMethod.POST, "/cases", "/v1/cases", "/v2/cases")

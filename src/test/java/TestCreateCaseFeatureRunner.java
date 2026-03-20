@@ -7,5 +7,11 @@ import org.junit.runner.RunWith;
         features = "src/test/resources/features",
         glue = {"com.capgemini.demo"}
 )
-public class CreateCaseFeatureRunner {
+/*
+@Configuration(
+        value = "classpath:CucumberSpringConfig.java"
+)
+
+ */
+public class TestCreateCaseFeatureRunner {
 }

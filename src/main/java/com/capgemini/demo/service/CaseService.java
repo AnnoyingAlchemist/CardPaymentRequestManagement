@@ -264,7 +264,7 @@ public class CaseService {
                         new ResponseStatusException(HttpStatus.NOT_FOUND, "Case with ID " + id + " not found"));
 
         repository.deleteById(id);
-        historyRepository.deleteByCaseId(id);
+        historyRepository.deleteByCaseId(existing);
     }
 
     /**

@@ -27,17 +27,17 @@ public class Fraud implements RuleSet {
 
         if(c.getTransactionAmount().compareTo(BigDecimal.valueOf(criticalValueThreshold)) > 0){
             suggestion.setPriority(Priority.CRITICAL);
-            suggestion.setRecommendedNextAction(Action.AUTO_CREDIT.name());
+            suggestion.setRecommendedNextAction(Action.ESCALATE.name());
             return suggestion;
         }
         if(c.getTransactionAmount().compareTo(BigDecimal.valueOf(highValueThreshold)) > 0){
             suggestion.setPriority(Priority.HIGH);
-            suggestion.setRecommendedNextAction(Action.AUTO_CREDIT.name());
+            suggestion.setRecommendedNextAction(Action.REVIEW_NORMAL.name());
             return suggestion;
         }
         if(c.getTransactionAmount().compareTo(BigDecimal.valueOf(mediumValueThreshold)) > 0){
             suggestion.setPriority(Priority.MEDIUM);
-            suggestion.setRecommendedNextAction(Action.AUTO_CREDIT.name());
+            suggestion.setRecommendedNextAction(Action.REVIEW_NORMAL.name());
             return suggestion;
         }
         if(c.getTransactionAmount().compareTo(BigDecimal.valueOf(lowValueThreshold)) < 0){

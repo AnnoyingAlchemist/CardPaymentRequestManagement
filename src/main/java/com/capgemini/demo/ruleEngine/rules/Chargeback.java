@@ -28,17 +28,17 @@ public class Chargeback implements RuleSet {
 
         if(caseSummary.getTransactionAmount().compareTo(BigDecimal.valueOf(criticalValueThreshold)) > 0){
             suggestion.setPriority(Priority.CRITICAL);
-            suggestion.setRecommendedNextAction(Action.AUTO_CREDIT.name());
+            suggestion.setRecommendedNextAction(Action.REVIEW_NORMAL.name());
             return suggestion;
         }
         if(caseSummary.getTransactionAmount().compareTo(BigDecimal.valueOf(highValueThreshold)) > 0){
             suggestion.setPriority(Priority.HIGH);
-            suggestion.setRecommendedNextAction(Action.AUTO_CREDIT.name());
+            suggestion.setRecommendedNextAction(Action.REVIEW_NORMAL.name());
             return suggestion;
         }
         if(caseSummary.getTransactionAmount().compareTo(BigDecimal.valueOf(mediumValueThreshold)) > 0){
             suggestion.setPriority(Priority.MEDIUM);
-            suggestion.setRecommendedNextAction(Action.AUTO_CREDIT.name());
+            suggestion.setRecommendedNextAction(Action.REVIEW_NORMAL.name());
             return suggestion;
         }
         if(caseSummary.getTransactionAmount().compareTo(BigDecimal.valueOf(lowValueThreshold)) < 0){
@@ -67,6 +67,8 @@ public class Chargeback implements RuleSet {
         }
 
  */
+        suggestion.setPriority(Priority.UNKNOWN);
+        suggestion.setRecommendedNextAction("UNKNOWN");
         return suggestion;
     }
 

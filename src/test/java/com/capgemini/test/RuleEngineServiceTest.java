@@ -1,4 +1,4 @@
-package com.capgemini.demo;
+package com.capgemini.test;
 
 import com.capgemini.demo.casehelper.CaseSummary;
 import com.capgemini.demo.ruleEngine.Priority;

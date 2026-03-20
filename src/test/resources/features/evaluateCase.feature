@@ -16,5 +16,5 @@ Feature: automatic priority level evaluation of cases
 
   Scenario: rule evaluation fails
     Given a case is created in the database with edge case attributes
-    When the rule engine evaluates the case detailss
+    When the rule engine evaluates the case details
     Then the case should be assigned an UNKNOWN priority before being saved to the database

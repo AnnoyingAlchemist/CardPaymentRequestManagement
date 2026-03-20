@@ -1,9 +1,7 @@
-package com.capgemini.demo;
+package com.capgemini.test;
 
 
 import com.capgemini.demo.casefacade.CaseFacade;
-import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
